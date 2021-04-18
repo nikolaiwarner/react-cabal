@@ -9,41 +9,32 @@ import moment from 'moment'
 import { AppThunk } from '../../app/store'
 import { listCommands, processCommand } from '../../utils/textInputCommands'
 import { generateUniqueName } from '../../utils/helpers'
-import {
-  focusChannel as sendFocusChannel,
-  joinChannel as sendJoinChannel,
-  leaveChannel as sendLeaveChannel,
-  removeCabal as sendRemoveCabal,
-  setChannelTopic as sendSetChannelTopic,
-  setUsername as sendSetUsername,
-  focusCabal as sendfocusCabal,
-} from '../../utils/cabal-render-ipc'
-import { CabalChannelProps, CabalsProps } from '../../app/types'
+// import {
+//   focusChannel as sendFocusChannel,
+//   joinChannel as sendJoinChannel,
+//   leaveChannel as sendLeaveChannel,
+//   removeCabal as sendRemoveCabal,
+//   setChannelTopic as sendSetChannelTopic,
+//   setUsername as sendSetUsername,
+//   focusCabal as sendfocusCabal,
+// } from '../../utils/cabal-render-ipc'
+import { AppProps, CabalChannelProps, ChannelProps } from '../../app/types'
+
+import { defaultCabal, defaultCabals } from '../../utils/fakeData'
 
 interface TextInputCommandProps {
   cabalKey: string
   text: string
 }
 
-const initialState: CabalsProps = {
+console.log({ defaultCabal })
+
+const initialState: AppProps = {
   cabalKeys: ['1eef9ad64e284691b7c6f6310e39204b5f92765e36102046caaa6a7ff8c02d74'],
-  cabals: [
-    {
-      channelMembers: { '1234': { key: '1234', name: 'nick' } },
-      channels: ['default'],
-      channelsJoined: ['default'],
-      channelMessagesUnread: {},
-      currentChannel: 'default',
-      key: '1eef9ad64e284691b7c6f6310e39204b5f92765e36102046caaa6a7ff8c02d74',
-      messages: [],
-      username: 'nickwarner',
-      users: { '1234': { key: '1234', name: 'nick' } },
-    },
-  ],
+  cabals: defaultCabals,
   cabalSettingsModalVisible: false,
   channelBrowserModalVisible: false,
-  currentCabalKey: '1eef9ad64e284691b7c6f6310e39204b5f92765e36102046caaa6a7ff8c02d74',
-  currentChannel: 'default',
+  currentCabal: defaultCabal,
   currentScreen: 'loading',
   emojiPickerModalVisible: false,
 }
@@ -73,11 +64,11 @@ const cabalsSlice = createSlice({
       state.channelBrowserModalVisible = action.payload
     },
     setCurrentCabal(state, action) {
-      state.currentCabalKey = action.payload
+      state.currentCabal = action.payload
     },
     setCurrentChannel(state, action: PayloadAction<CabalChannelProps>) {
       console.log('setCurrentChannel', action)
-      state.currentChannel = action.payload.channel || 'default'
+      state.currentCabal.currentChannel = action.payload.channel
     },
     setCurrentScreen(state, action: PayloadAction<any>) {
       state.currentScreen = action.payload
@@ -111,7 +102,7 @@ export const {
 export default cabalsSlice.reducer
 
 export const focusCabal = (props: CabalChannelProps): AppThunk => async (dispatch) => {
-  sendfocusCabal(props)
+  // sendfocusCabal(props)
   if (props.channel) {
     dispatch(focusChannel(props))
   }
@@ -119,17 +110,17 @@ export const focusCabal = (props: CabalChannelProps): AppThunk => async (dispatc
 }
 
 export const focusChannel = (props: CabalChannelProps): AppThunk => async (dispatch) => {
-  sendFocusChannel(props)
+  // sendFocusChannel(props)
   dispatch(setCurrentChannel(props))
 }
 
 export const joinChannel = (props: CabalChannelProps): AppThunk => async (dispatch) => {
-  sendJoinChannel(props)
+  // sendJoinChannel(props)
   dispatch(setCurrentChannel(props))
 }
 
 export const leaveChannel = (props: CabalChannelProps): AppThunk => async (dispatch) => {
-  sendLeaveChannel(props)
+  // sendLeaveChannel(props)
 }
 
 export const listTextInputCommands = (): AppThunk => async (dispatch) => {
@@ -145,7 +136,7 @@ export const onTextInputCommand = (props: TextInputCommandProps): AppThunk => as
 export const removeCabal = ({ cabalKey }: { cabalKey: string }): AppThunk => async (
   dispatch,
 ) => {
-  sendRemoveCabal({ cabalKey })
+  // sendRemoveCabal({ cabalKey })
 }
 
 export const saveCabalSettings = (): AppThunk => async (dispatch) => {}
@@ -159,7 +150,7 @@ export const setChannelTopic = ({
   channel: string
   topic: string
 }): AppThunk => async (dispatch) => {
-  sendSetChannelTopic({ cabalKey, channel, topic })
+  // sendSetChannelTopic({ cabalKey, channel, topic })
 }
 
 export const setUsername = ({
@@ -169,7 +160,7 @@ export const setUsername = ({
   cabalKey: string
   username: string
 }): AppThunk => async (dispatch) => {
-  sendSetUsername({ cabalKey, username })
+  // sendSetUsername({ cabalKey, username })
 }
 
 export const showChannelBrowserModal = (): AppThunk => async (dispatch) => {

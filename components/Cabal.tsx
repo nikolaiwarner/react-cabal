@@ -1,10 +1,16 @@
-import { View } from 'react-native-web'
+import { Text, View } from 'react-native'
 import React from 'react'
 import styled from 'styled-components/native'
 
+import { CabalProps } from '../app/types'
 import AppSidebar from './AppSidebar'
 import Channel from './Channel'
 import Sidebar from './Sidebar'
+
+interface CabalScreenProps {
+  cabals: CabalProps[]
+  currentCabal: CabalProps
+}
 
 const CabalContainer = styled.View`
   display: flex;
@@ -12,15 +18,19 @@ const CabalContainer = styled.View`
   height: 100%;
 `
 
-export default function Cabal({ cabals, currentCabal }) {
-  if (!currentCabal) {
-    return <View>Loading...</View>
+export default function Cabal(props: CabalScreenProps) {
+  if (!props.currentCabal) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    )
   }
   return (
     <CabalContainer>
-      <AppSidebar cabals={cabals} currentCabal={currentCabal} />
-      <Sidebar cabal={currentCabal} />
-      <Channel cabal={currentCabal} channel={currentCabal.currentChannel} />
+      <AppSidebar />
+      <Sidebar />
+      <Channel />
     </CabalContainer>
   )
 }

@@ -1,39 +1,30 @@
-export interface CabalsProps {
+export interface AppProps {
   cabalKeys: string[]
   cabals: CabalProps[]
   cabalSettingsModalVisible: boolean
   channelBrowserModalVisible: boolean
-  currentCabalKey: string | null
-  currentChannel: string
+  currentCabal?: CabalProps
   currentScreen: 'addCabal' | 'main' | 'loading' | 'settings'
   emojiPickerModalVisible: boolean
 }
 
 export interface CabalProps {
-  channelMembers: UserProps[]
-  channelMessagesUnread: object
-  channels: string[]
-  channelsJoined: string[]
-  currentChannel: string
+  channels: ChannelProps[]
+  channelsJoined: ChannelProps[]
+  currentChannel: ChannelProps
   key: string
-  messages: MessageProps[]
+  name?: string
   username: string
   users: UserProps[]
 }
 
 export interface CabalChannelProps {
   cabalKey: string
-  channel: string
-}
-
-export interface CabalProps {
-  messages: MessageProps[]
-  name?: string
-  topic?: string
+  channel: ChannelProps
 }
 
 export interface ChannelProps {
-  messages: MessageProps[]
+  members: UserProps[]
   name: string
   topic: string
 }
@@ -41,6 +32,7 @@ export interface ChannelProps {
 export interface UserProps {
   key: string
   name: string
+  online: boolean
 }
 
 export interface MessageProps {

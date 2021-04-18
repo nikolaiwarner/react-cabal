@@ -1,20 +1,27 @@
-import { Image, View } from 'react-native-web'
+import { Image, View } from 'react-native'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/native'
 
 import CabalList from './CabalList'
+import { CabalProps } from '../app/types'
+
+interface AppSidebarProps {
+  cabals: CabalProps[]
+  currentCabal: CabalProps
+}
 
 const AppSidebarContainer = styled.View`
   align-items: center;
   background-color: #16161d;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right-color: rgba(255, 255, 255, 0.1);
+  border-right-width: 1px;
   color: #fff;
   display: flex;
   flex-direction: column;
   flex: 0 0 4.4rem;
   justify-content: space-between;
-  overflow-y: auto;
+  overflow: scroll;
   padding-top: 2rem;
 `
 
@@ -43,20 +50,15 @@ const SettingsButton = styled.View`
   }
 `
 
-export default function AppSidebar({ cabals, currentCabal }) {
+export default function AppSidebar(props: AppSidebarProps) {
   return (
     <AppSidebarContainer>
-      <CabalList cabals={cabals} currentCabal={currentCabal} />
+      <CabalList />
       <Footer>
         <SettingsButton>
-          <Image src="static/images/icon-gear.svg" />
+          {/* <Image source={{uri: "static/images/icon-gear.svg"}} /> */}
         </SettingsButton>
       </Footer>
     </AppSidebarContainer>
   )
-}
-
-AppSidebar.propTypes = {
-  cabals: PropTypes.object.isRequired,
-  currentCabal: PropTypes.object.isRequired,
 }

@@ -1,4 +1,4 @@
-import { View } from 'react-native-web'
+import { View } from 'react-native'
 import Identicon from 'react-blockies'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -14,7 +14,7 @@ const AvatarContainer = styled.View`
 export default function Avatar({ name, bgColor, onClick }) {
   return (
     <AvatarContainer>
-      <Identicon seed={name} bgColor={bgColor || '#fff'} onClick={onClick} />
+      {/* <Identicon seed={name} bgColor={bgColor || '#fff'} onClick={onClick} /> */}
     </AvatarContainer>
   )
 }

@@ -1,42 +1,52 @@
-import { View } from 'react-native-web'
+import { DrawerActions, useTheme } from '@react-navigation/native'
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer'
+import { Text, View } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/native'
 
-import ChannelList from './ChannelList'
+import { CabalProps } from '../app/types'
+import { RootState } from '../app/rootReducer'
+import ChannelList from '../screens/ChannelListScreen'
 import PeerList from './PeerList'
 
 const SidebarContainer = styled.View`
-  flex: 0 0 13.75rem;
-  background-color: #16161d;
-  color: #fff;
+  /* flex: 0 0 13.75; */
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  padding-top: 2;
+`
+
+const CabalName = styled.Text`
+  padding-top: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
   overflow: hidden;
-  overflow-y: scroll;
-  padding-top: 2rem;
+  color: #fff;
 `
 
-const CabalName = styled.View`
-  padding: 1rem 1rem;
-  /* overflow: hidden; */
-`
+export default function Sidebar(props) {
+  const { colors } = useTheme()
 
-export default function Sidebar({ cabal }) {
+  const { currentCabal } = useSelector((state: RootState) => state.cabals)
+
   return (
-    <SidebarContainer>
-      <CabalName>{cabal.key}</CabalName>
-      <ChannelList
-        cabalKey={cabal.key}
-        channels={cabal.channels}
-        channelsJoined={cabal.channelsJoined}
-        currentChannel={cabal.currentChannel}
-      />
-      <PeerList users={cabal.users} />
-    </SidebarContainer>
+    <DrawerContentScrollView {...props} style={{ backgroundColor: colors.background }}>
+      <SidebarContainer>
+        {currentCabal && (
+          <CabalName style={{ color: colors.text }}>
+            {currentCabal.name ?? currentCabal.key}
+          </CabalName>
+        )}
+        <ChannelList />
+        <PeerList />
+      </SidebarContainer>
+    </DrawerContentScrollView>
   )
-}
-
-Sidebar.propTypes = {
-  cabal: PropTypes.object,
 }

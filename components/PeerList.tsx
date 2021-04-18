@@ -1,45 +1,51 @@
-import { View } from 'react-native-web'
-import PropTypes from 'prop-types'
+import { useSelector, useDispatch } from 'react-redux'
+import { useTheme } from '@react-navigation/native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import styled from 'styled-components/native'
 
-const PeerListContainer = styled.View``
+import { RootState } from '../app/rootReducer'
 
-const ListHeader = styled.View`
+const PeerListContainer = styled.View`
+  padding-bottom: 32px;
+`
+
+const ListHeader = styled.Text`
+  padding: 32px 16px 16px 16px;
   text-transform: uppercase;
-  padding: 2rem 1rem 1rem 1rem;
 `
 
-const Row = styled.View`
+const Row = styled.TouchableOpacity`
   /* cursor: pointer; */
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
 `
 
-const StarterMessage = styled.View``
+const StarterMessage = styled.Text``
 
-export default function PeerList({ users, loading, onClick }) {
-  if (loading) {
-    return <PeerListContainer>Loading...</PeerListContainer>
-  }
+export default function PeerList() {
+  const { colors } = useTheme()
+
+  const { currentCabal } = useSelector((state: RootState) => state.cabals)
+
+  const onClickPeer = () => {}
+
   return (
     <PeerListContainer>
-      <ListHeader>Peers</ListHeader>
-      {!users.length && <StarterMessage>No Peers.</StarterMessage>}
-      {users.length &&
-        users.map((peer, index) => {
+      <ListHeader style={{ color: colors.text }}>Peers</ListHeader>
+      {!currentCabal.users.length && (
+        <StarterMessage style={{ color: colors.text }}>No Peers.</StarterMessage>
+      )}
+      {currentCabal.users.length &&
+        currentCabal.users.map((peer, index) => {
           const name = peer.name || peer.key.substr(0, 6)
           return (
-            <Row key={index} onClick={onClick}>
-              {name} {peer.online}
+            <Row key={index} onPress={onClickPeer}>
+              <Text style={{ color: colors.text }}>{name}</Text>
+
+              {/* {peer.online} */}
             </Row>
           )
         })}
     </PeerListContainer>
   )
-}
-
-PeerList.propTypes = {
-  users: PropTypes.array.isRequired,
-  loading: PropTypes.bool,
-  onClick: PropTypes.func,
 }

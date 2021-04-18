@@ -1,6 +1,6 @@
+import { Button, Image, Text, TextInput, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { Image, TextInput, View } from 'react-native-web'
-import PropTypes from 'prop-types'
+import { useTheme } from '@react-navigation/native'
 import React, { useRef } from 'react'
 import styled from 'styled-components/native'
 
@@ -10,11 +10,13 @@ import styled from 'styled-components/native'
 import { publishMessage } from '../features/cabals/messagesSlice'
 import { RootState } from '../app/rootReducer'
 import { setEmojiPickerModalVisible } from '../features/cabals/cabalsSlice'
+import { ChannelProps } from '../app/types'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const MessageComposerContainer = styled.View`
-  background: #fff;
+  /* background: #fff; */
   /* cursor: text; */
-  margin: 0 1rem 1rem 1rem;
+  margin: 0 16px 16px 16px;
 `
 
 const InputWrapper = styled.View`
@@ -24,7 +26,7 @@ const InputWrapper = styled.View`
   display: flex;
   justify-content: space-between;
   min-height: 48px;
-  padding: 0.5rem 0;
+  padding: 8px 0;
   /* transition: all 0.1s ease-in-out; */
 
   &:hover {
@@ -33,7 +35,7 @@ const InputWrapper = styled.View`
 `
 
 const Input = styled.View`
-  padding: 0 1rem;
+  padding: 0 16px;
   width: 100%;
 `
 
@@ -41,30 +43,33 @@ const Form = styled.View`
   align-content: center;
   display: flex;
   width: 100%;
+  flex-direction: row;
 `
 
 const Textarea = styled.TextInput`
   border: 0;
-  display: block;
-  font-size: 0.875rem;
+  /* display: block; */
+  /* font-size: 0.875pt; */
   max-height: 200px;
-  outline: none;
-  resize: none;
+  /* outline: none; */
+  /* resize: none; */
   width: 100%;
 `
 
 const EmojiPickerContainer = styled.View`
-  position: 'absolute';
+  /* position: 'absolute';
   bottom: '100px';
   right: '16px';
-  display: 'none';
+  display: 'none'; */
 `
 
 const ToggleEmojiPickerButton = styled.View``
 
 export default function MessageComposer() {
+  const { colors } = useTheme()
   const dispatch = useDispatch()
-  const cabals = useSelector((state: RootState) => state.cabals)
+
+  const { cabals, currentCabal } = useSelector((state: RootState) => state.cabals)
 
   const formFieldRef = useRef(null)
   const textInputRef = useRef(null)
@@ -76,18 +81,18 @@ export default function MessageComposer() {
   }
 
   const onSubmit = (e) => {
-    const message = {
-      content: {
-        channel: cabals.currentChannel,
-        text: textInputRef.current.value,
-      },
-      type: 'chat/text',
-    }
+    // const message = {
+    //   content: {
+    //     channel: currentCabal.currentChannel,
+    //     text: textInputRef.current.value,
+    //   },
+    //   type: 'chat/text',
+    // }
     dispatch(
       publishMessage({
-        cabalKey: cabals.currentCabalKey,
-        channel: cabals.currentChannel,
-        message,
+        cabalKey: currentCabal.key,
+        channel: currentCabal.currentChannel.name,
+        message: textInputRef.current.value,
       }),
     )
   }
@@ -97,12 +102,12 @@ export default function MessageComposer() {
   const focusInput = () => {}
 
   const toggleEmojis = () => {
-    dispatch(setEmojiPickerModalVisible(!cabals.emojiPickerModalVisible))
+    // dispatch(setEmojiPickerModalVisible(!cabals.emojiPickerModalVisible))
   }
 
   return (
     <MessageComposerContainer>
-      <InputWrapper>
+      <InputWrapper style={{ borderColor: colors.border }}>
         <Input onClick={focusInput}>
           <Form onSubmit={onSubmit} ref={formFieldRef}>
             <Textarea
@@ -111,12 +116,18 @@ export default function MessageComposer() {
               onKeyUp={onKeyUp}
               placeholder="Write a message"
               ref={textInputRef}
+              style={{ color: colors.text }}
             />
-            <button onClick={onSubmit}>Send</button>
+            <TouchableOpacity
+              onPress={onSubmit}
+              style={{ borderWidth: 1, borderColor: '#000', width: 100 }}
+            >
+              <Text style={{ color: colors.primary }}>Send</Text>
+            </TouchableOpacity>
           </Form>
         </Input>
-        <EmojiPickerContainer visible={cabals.emojiPickerModalVisible}>
-          {/* <Picker
+        {/* <EmojiPickerContainer visible={cabals.emojiPickerModalVisible}> */}
+        {/* <Picker
             onSelect={(e) => addEmoji(e)}
             native
             sheetSize={64}
@@ -125,15 +136,11 @@ export default function MessageComposer() {
             emoji='point_up'
             title='Pick an emoji...'
           /> */}
-        </EmojiPickerContainer>
+        {/* </EmojiPickerContainer> */}
         <ToggleEmojiPickerButton onClick={toggleEmojis}>
-          <Image src="static/images/icon-composerother.svg" />
+          {/* <Image src="static/images/icon-composerother.svg" /> */}
         </ToggleEmojiPickerButton>
       </InputWrapper>
     </MessageComposerContainer>
   )
-}
-
-MessageComposer.propTypes = {
-  channelName: PropTypes.string,
 }

@@ -14,18 +14,12 @@ const ChannelContainer = styled.View`
   background: #fff;
 `
 
-export default function Channel({
-  cabal,
-  channel,
-}: {
-  cabal: CabalProps
-  channel: ChannelProps
-}) {
+export default function Channel() {
   return (
     <ChannelContainer>
       <ChannelHeader />
-      <MessageList />
-      <MessageComposer />
+      {/* <MessageList />  */}
+      {/* <MessageComposer /> */}
     </ChannelContainer>
   )
 }

@@ -9,10 +9,13 @@ import { AppThunk } from '../../app/store'
 import { generateUniqueName } from '../../utils/helpers'
 import { listCommands, processCommand } from '../../utils/textInputCommands'
 import { MessageProps } from '../../app/types'
-import {
-  publishMessage as sendPublishMessage,
-  publishStatusMessage as sendPublishStatusMessage,
-} from '../../utils/cabal-render-ipc'
+
+import { defaultMessages } from '../../utils/fakeData'
+
+// import {
+//   publishMessage as sendPublishMessage,
+//   publishStatusMessage as sendPublishStatusMessage,
+// } from '../../utils/cabal-render-ipc'
 
 interface MessagesProps {
   messages: MessageProps[]
@@ -24,7 +27,7 @@ interface TextInputCommandProps {
 }
 
 let initialState: MessagesProps = {
-  messages: [],
+  messages: defaultMessages,
 }
 
 const cabalsSlice = createSlice({
@@ -51,7 +54,7 @@ export const publishMessage = ({
   channel: string
   message: string
 }): AppThunk => async (dispatch) => {
-  sendPublishMessage({ cabalKey, channel, message })
+  // sendPublishMessage({ cabalKey, channel, message })
 }
 
 export const publishStatusMessage = ({
@@ -63,7 +66,7 @@ export const publishStatusMessage = ({
   channel: string
   text: string
 }): AppThunk => async (dispatch) => {
-  sendPublishStatusMessage({ cabalKey, channel, text })
+  // sendPublishStatusMessage({ cabalKey, channel, text })
 }
 
 export const listTextInputCommands = (): AppThunk => async (dispatch) => {
