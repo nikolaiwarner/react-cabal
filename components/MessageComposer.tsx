@@ -1,4 +1,4 @@
-import { Button, Image, Text, TextInput, View } from 'react-native'
+import { Button, Image, Platform, Text, TextInput, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTheme } from '@react-navigation/native'
 import React, { useRef } from 'react'
@@ -17,6 +17,7 @@ const MessageComposerContainer = styled.View`
   /* background: #fff; */
   /* cursor: text; */
   margin: 0 16px 16px 16px;
+  height: 55px;
 `
 
 const InputWrapper = styled.View`
@@ -48,12 +49,15 @@ const Form = styled.View`
 
 const Textarea = styled.TextInput`
   border: 0;
-  /* display: block; */
-  /* font-size: 0.875pt; */
+  font-size: 16px;
   max-height: 200px;
-  /* outline: none; */
-  /* resize: none; */
   width: 100%;
+
+  ${Platform.OS === 'web' &&
+  `
+    outlineWidth: 0;
+    resize: none;
+  `}
 `
 
 const EmojiPickerContainer = styled.View`

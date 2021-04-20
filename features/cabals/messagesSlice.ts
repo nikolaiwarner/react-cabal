@@ -10,7 +10,7 @@ import { generateUniqueName } from '../../utils/helpers'
 import { listCommands, processCommand } from '../../utils/textInputCommands'
 import { MessageProps } from '../../app/types'
 
-import { defaultMessages } from '../../utils/fakeData'
+import { defaultMessages, manyMessages } from '../../utils/fakeData'
 
 // import {
 //   publishMessage as sendPublishMessage,
@@ -27,7 +27,7 @@ interface TextInputCommandProps {
 }
 
 let initialState: MessagesProps = {
-  messages: defaultMessages,
+  messages: manyMessages,
 }
 
 const cabalsSlice = createSlice({

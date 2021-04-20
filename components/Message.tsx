@@ -14,16 +14,29 @@ interface MessageComponentProps {
 
 const MessageContainer = styled.View`
   display: flex;
-  margin-bottom: 10px;
+  flex-direction: row;
+  margin-bottom: 16px;
   padding-top: 4px;
   width: 100%;
 `
 
+const AvatarContainer = styled.View`
+  display: flex;
+  padding-right: 16px;
+`
+
+const Name = styled.Text`
+  align-items: flex-end;
+  display: flex;
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 8px;
+  margin-top: -5px;
+`
+
 const Timestamp = styled.Text`
-  color: rgba(0, 0, 0, 0.33);
-  /* font-size: 0.75rem; */
-  font-weight: 500;
-  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 400;
 
   & .date--full {
     margin-left: 8px;
@@ -32,15 +45,9 @@ const Timestamp = styled.Text`
   }
 `
 
-const AvatarContainer = styled.View`
-  display: flex;
-  padding: 0 10px 0 16px;
-`
-
 const Content = styled.View`
   display: flex;
   flex-direction: column;
-  /* font-size: 0.875rem; */
   line-height: 1.5;
   padding: 0 24px 0 0;
 
@@ -52,13 +59,8 @@ const Content = styled.View`
 const StyledText = styled.Text`
   margin-left: ${(props) => (props.indent ? '32px;' : '0px')};
   margin-top: ${(props) => (props.indent ? '-12px;' : '0px')};
-`
-
-const Name = styled.Text`
-  align-items: flex-end;
-  display: flex;
-  font-weight: 700;
-  margin-top: -5px;
+  font-size: 16px;
+  color: ${(props) => props.colors.textSofter};
 `
 
 export default function Message(props: MessageComponentProps) {
@@ -67,8 +69,8 @@ export default function Message(props: MessageComponentProps) {
   const renderDate = () => {
     const time = moment(props.message.time)
     return (
-      <Timestamp>
-        {time.format('h:mm A')}
+      <Timestamp style={{ color: colors.textSofter }}>
+        ⋅ {time.format('h:mm A')}
         {/* <View className="date--full">{time.format('LL')}</View> */}
       </Timestamp>
     )
@@ -89,11 +91,14 @@ export default function Message(props: MessageComponentProps) {
       <Content>
         {props.repeatedName ? null : (
           <Name style={{ color: colors.text }}>
-            {props.message.user.name || 'conspirator'}
-            {renderDate()}
+            {props.message.user.name || 'conspirator'} {renderDate()}
           </Name>
         )}
-        <StyledText style={{ color: colors.text }} indent={!!props.repeatedName}>
+        <StyledText
+          colors={colors}
+          // style={{ color: colors.text }}
+          indent={!!props.repeatedName}
+        >
           {enrichText(props.message.content)}
         </StyledText>
       </Content>

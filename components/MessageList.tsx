@@ -6,10 +6,12 @@ import styled from 'styled-components/native'
 import { RootState } from '../app/rootReducer'
 import Message from './Message'
 
-const MessageListContainer = styled.View`
-  flex-grow: 1;
+const MessageListContainer = styled.ScrollView`
   overflow: scroll;
-  margin: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 16px;
 `
 
 const StarterMessage = styled.View`

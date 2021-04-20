@@ -11,6 +11,7 @@ export interface AppProps {
 export interface CabalProps {
   channels: ChannelProps[]
   channelsJoined: ChannelProps[]
+  channelsStarred: ChannelProps[]
   currentChannel: ChannelProps
   key: string
   name?: string
@@ -20,7 +21,7 @@ export interface CabalProps {
 
 export interface CabalChannelProps {
   cabalKey: string
-  channel: ChannelProps
+  channel?: ChannelProps
 }
 
 export interface ChannelProps {

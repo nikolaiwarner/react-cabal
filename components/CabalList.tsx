@@ -1,47 +1,48 @@
-import { Image, Text, View } from 'react-native'
+import { Feather } from '@expo/vector-icons'
+import { Image, TouchableOpacity, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTheme } from '@react-navigation/native'
 import React from 'react'
 import styled from 'styled-components/native'
 
 import { CabalProps } from '../app/types'
 import { focusCabal, showScreen } from '../features/cabals/cabalsSlice'
 import { RootState } from '../app/rootReducer'
+import { color } from 'react-native-reanimated'
 
 const CabalListContainer = styled.View`
-  background-color: #16161d;
-  color: #fff;
+  /* flex-grow: 1; */
+  /* width: 32px; */
+  border-right-width: 1px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  height: 100%;
   overflow: hidden;
 `
 
 const List = styled.View`
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 1;
-  padding-right: 1;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
   overflow: scroll;
 `
 
-const Item = styled.Text`
-  align-items: center;
-  border-radius: 100;
-  border: 2px solid rgba(255, 255, 255, 0.75);
-  color: rgba(255, 255, 255, 0.75);
+const Item = styled.TouchableOpacity`
   /* cursor: pointer; */
-  display: flex;
-  font-size: 0.75;
-  font-weight: 700;
-  height: 2;
-  justify-content: center;
-  margin-top: 0;
-  margin-right: 0;
-  margin-bottom: 0.75;
-  margin-left: 0;
   /* transition: all 0.05s ease-in-out; */
-  width: 2;
+  align-items: center;
+  border-radius: 48px;
+  display: flex;
+  font-size: 16px;
+  height: 48px;
+  justify-content: center;
+  margin-bottom: 8px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
   opacity: 0.7;
+  width: 48px;
 
   &:hover {
     opacity: 1;
@@ -49,19 +50,22 @@ const Item = styled.Text`
   }
 
   &.active {
-    background-color: #693afa;
     border: none;
-    color: white !important;
   }
 `
 
+const ItemText = styled.Text`
+  font-weight: 700;
+`
+
 export default function CabalList() {
+  const { colors } = useTheme()
   const dispatch = useDispatch()
 
   const { cabals, currentCabal } = useSelector((state: RootState) => state.cabals)
 
   const onClickCabalListItem = (cabalKey) => {
-    // dispatch(focusCabal({ cabalKey }))
+    dispatch(focusCabal({ cabalKey }))
   }
 
   const onClickAddCabalButton = () => {
@@ -72,31 +76,33 @@ export default function CabalList() {
     dispatch(showScreen('settings'))
   }
 
-  // if (loading) {
-  //   return (
-  //     <CabalListContainer>
-  //       <Text>Loading...</Text>
-  //     </CabalListContainer>
-  //   )
-  // }
   return (
-    <CabalListContainer>
+    <CabalListContainer style={{ borderRightColor: colors.border }}>
       <List>
         {cabals.length &&
           cabals.map((cabal, index) => {
+            const isCurrent = cabal.key === currentCabal.key
             return (
-              <Item key={index} onClick={() => onClickCabalListItem(cabal.key)}>
-                {cabal.key.substr(0, 2)}
+              <Item
+                key={index}
+                onClick={() => onClickCabalListItem(cabal.key)}
+                style={{
+                  backgroundColor: colors.card,
+                }}
+              >
+                <ItemText style={{ color: isCurrent ? colors.primary : colors.text }}>
+                  {cabal.key.substr(0, 2)}
+                </ItemText>
               </Item>
             )
           })}
         <Item onClick={onClickAddCabalButton}>
-          {/* <Image src="static/images/icon-newchannel.svg" /> */}
+          <Feather name="plus" size={24} color={colors.textSofter} />
         </Item>
       </List>
-      <Item onClick={onClickAppSettingsButton}>
-        {/* <Image src="static/images/icon-newchannel.svg" /> */}
-      </Item>
+      {/* <Item onClick={onClickAppSettingsButton}>
+        <Feather name="settings" size={24} color={colors.text} />
+      </Item> */}
     </CabalListContainer>
   )
 }
