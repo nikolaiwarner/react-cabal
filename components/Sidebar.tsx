@@ -1,9 +1,4 @@
 import { DrawerActions, useTheme } from '@react-navigation/native'
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer'
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import { ScrollView, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
@@ -18,8 +13,7 @@ import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
 import { color } from 'react-native-reanimated'
 
-const SidebarContainer = styled.View`
-  /* flex: 0 0 13.75; */
+const SidebarContainer = styled.SafeAreaView`
   display: flex;
   flex-direction: row;
   overflow: scroll;

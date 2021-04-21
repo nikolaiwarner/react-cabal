@@ -85,7 +85,7 @@ export default function CabalList() {
             return (
               <Item
                 key={index}
-                onClick={() => onClickCabalListItem(cabal.key)}
+                onPress={() => onClickCabalListItem(cabal.key)}
                 style={{
                   backgroundColor: colors.card,
                 }}

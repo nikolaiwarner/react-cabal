@@ -1,30 +1,25 @@
 import { DrawerActions, useTheme, useNavigation } from '@react-navigation/native'
+import { Octicons } from '@expo/vector-icons'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import styled from 'styled-components/native'
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer'
-
-import { focusChannel } from '../features/cabals/cabalsSlice'
-import { ChannelProps } from '../app/types'
-import { RootState } from '../app/rootReducer'
 
 const SidebarListContainer = styled.View`
+  border-color: ${(props) => props.colors.border};
+  border-top-width: 1px;
   padding-bottom: 12px;
 `
 
-const ListHeader = styled.Text`
-  border-color: ${(props) => props.colors.border};
-  border-top-width: 1px;
-  color: ${(props) => props.colors.textSofter};
+const ListHeader = styled.TouchableOpacity`
   padding-bottom: 4px;
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 12px;
+`
+
+const Title = styled.Text`
+  color: ${(props) => props.colors.textSofter};
   text-transform: uppercase;
 `
 
@@ -42,20 +37,20 @@ interface SidebarListProps {
 
 export default function SidebarList(props: SidebarListProps) {
   const { colors } = useTheme()
-  // const { currentCabal } = useSelector((state: RootState) => state.cabals)
-  // const dispatch = useDispatch()
-  // const navigation = useNavigation()
-
-  const onClickRow = (item: any) => {
-    // navigation.dispatch(DrawerActions.toggleDrawer())
-    // dispatch(focusChannel({ cabalKey: currentCabal.key, channel }))
-
-    props.onClickRow?.(item)
-  }
 
   return (
-    <SidebarListContainer>
-      <ListHeader colors={colors}>{props.title}</ListHeader>
+    <SidebarListContainer colors={colors}>
+      <ListHeader onPress={props.onToggleClosed}>
+        <Title colors={colors}>
+          <Octicons
+            name={props.isClosed ? 'triangle-right' : 'triangle-down'}
+            size={12}
+            color={colors.textSofter}
+          />
+          {'  '}
+          {props.title}
+        </Title>
+      </ListHeader>
       {!props.isClosed && (
         <ListBody>
           {props.items?.length &&

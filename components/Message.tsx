@@ -57,9 +57,10 @@ const Content = styled.View`
 `
 
 const StyledText = styled.Text`
-  margin-left: ${(props) => (props.indent ? '32px;' : '0px')};
+  margin-left: ${(props) => (props.indent ? '24px;' : '0px')};
   margin-top: ${(props) => (props.indent ? '-12px;' : '0px')};
   font-size: 16px;
+  margin-right: 16px;
   color: ${(props) => props.colors.textSofter};
 `
 
@@ -67,7 +68,7 @@ export default function Message(props: MessageComponentProps) {
   const { colors } = useTheme()
 
   const renderDate = () => {
-    const time = moment(props.message.time)
+    const time = moment(props.message.timestamp)
     return (
       <Timestamp style={{ color: colors.textSofter }}>
         ⋅ {time.format('h:mm A')}

@@ -19,7 +19,7 @@ const Container = styled.View`
   align-items: center;
   display: flex;
   flex-direction: row;
-  height: 77px;
+  height: 61px;
   justify-content: space-between;
   padding-top: 0;
   width: 236px;

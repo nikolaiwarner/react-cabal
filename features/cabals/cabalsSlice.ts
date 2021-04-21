@@ -63,8 +63,11 @@ const cabalsSlice = createSlice({
     setChannelBrowserModalVisible(state, action: PayloadAction<boolean>) {
       state.channelBrowserModalVisible = action.payload
     },
-    setCurrentCabal(state, action) {
-      state.currentCabal = action.payload
+    setCurrentCabal(state, action: PayloadAction<CabalChannelProps>) {
+      const cabal = state.cabals.find((cabal) => cabal.key === action.payload.cabalKey)
+      if (cabal) {
+        state.currentCabal = cabal
+      }
     },
     setCurrentChannel(state, action: PayloadAction<CabalChannelProps>) {
       console.log('setCurrentChannel', action)
@@ -103,6 +106,8 @@ export default cabalsSlice.reducer
 
 export const focusCabal = (props: CabalChannelProps): AppThunk => async (dispatch) => {
   // sendfocusCabal(props)
+
+  dispatch(setCurrentCabal({ cabalKey: props.cabalKey }))
   if (props.channel) {
     dispatch(focusChannel(props))
   }

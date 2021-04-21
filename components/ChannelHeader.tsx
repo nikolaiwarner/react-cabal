@@ -16,9 +16,11 @@ const ChannelHeaderContainer = styled.View`
   border-bottom-width: 1px;
   display: flex;
   flex-direction: row;
+  height: 62px;
   justify-content: space-between;
+  padding-bottom: 8px;
+  padding-top: 8px;
   padding: 16px;
-  height: 78px;
   /* -webkit-app-region: drag;
   padding-top: 16px;
   padding-left: 16px;

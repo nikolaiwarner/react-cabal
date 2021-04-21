@@ -38,6 +38,6 @@ export interface UserProps {
 
 export interface MessageProps {
   content: string
-  time: Date
+  timestamp: string
   user: UserProps
 }

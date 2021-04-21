@@ -1,4 +1,5 @@
 import { Button, Image, Platform, Text, TextInput, View } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTheme } from '@react-navigation/native'
 import React, { useRef } from 'react'
@@ -14,10 +15,9 @@ import { ChannelProps } from '../app/types'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const MessageComposerContainer = styled.View`
-  /* background: #fff; */
-  /* cursor: text; */
-  margin: 0 16px 16px 16px;
-  height: 55px;
+  border-top-color: ${(props) => props.colors.border};
+  border-top-width: 1px;
+  padding: 8px 16px 8px 16px;
 `
 
 const InputWrapper = styled.View`
@@ -26,9 +26,7 @@ const InputWrapper = styled.View`
   border: 2px solid rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: space-between;
-  min-height: 48px;
   padding: 8px 0;
-  /* transition: all 0.1s ease-in-out; */
 
   &:hover {
     border-color: rgba(0, 0, 0, 0.5);
@@ -36,28 +34,24 @@ const InputWrapper = styled.View`
 `
 
 const Input = styled.View`
-  padding: 0 16px;
-  width: 100%;
-`
-
-const Form = styled.View`
   align-content: center;
   display: flex;
-  width: 100%;
   flex-direction: row;
+  padding: 0 8px 0 0;
+  width: 100%;
 `
 
 const Textarea = styled.TextInput`
   border: 0;
+  flex-grow: 1;
   font-size: 16px;
   max-height: 200px;
-  width: 100%;
-
-  ${Platform.OS === 'web' &&
-  `
+  padding: 0 16px
+    ${Platform.OS === 'web' &&
+    `
     outlineWidth: 0;
     resize: none;
-  `}
+  `};
 `
 
 const EmojiPickerContainer = styled.View`
@@ -78,20 +72,19 @@ export default function MessageComposer() {
   const formFieldRef = useRef(null)
   const textInputRef = useRef(null)
 
-  const onKeyDown = () => {}
-
-  const onKeyUp = () => {
-    // resizeTextInput
+  const onKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      onSubmit()
+    } else if (event.key === 'Escape') {
+      textInputRef.current.blur()
+    } else if (event.key === 'ArrowUp') {
+      console.log('UP')
+    } else if (event.key === 'ArrowDown') {
+      console.log('DOWN')
+    }
   }
 
-  const onSubmit = (e) => {
-    // const message = {
-    //   content: {
-    //     channel: currentCabal.currentChannel,
-    //     text: textInputRef.current.value,
-    //   },
-    //   type: 'chat/text',
-    // }
+  const onSubmit = (_event?) => {
     dispatch(
       publishMessage({
         cabalKey: currentCabal.key,
@@ -110,25 +103,19 @@ export default function MessageComposer() {
   }
 
   return (
-    <MessageComposerContainer>
+    <MessageComposerContainer colors={colors}>
       <InputWrapper style={{ borderColor: colors.border }}>
         <Input onClick={focusInput}>
-          <Form onSubmit={onSubmit} ref={formFieldRef}>
-            <Textarea
-              aria-label="Type a message and press enter"
-              onKeyDown={onKeyDown}
-              onKeyUp={onKeyUp}
-              placeholder="Write a message"
-              ref={textInputRef}
-              style={{ color: colors.text }}
-            />
-            <TouchableOpacity
-              onPress={onSubmit}
-              style={{ borderWidth: 1, borderColor: '#000', width: 100 }}
-            >
-              <Text style={{ color: colors.primary }}>Send</Text>
-            </TouchableOpacity>
-          </Form>
+          <Textarea
+            aria-label="Type a message and press enter"
+            onKeyPress={onKeyPress}
+            placeholder="Write a message"
+            ref={textInputRef}
+            style={{ color: colors.text }}
+          />
+          <TouchableOpacity onPress={onSubmit}>
+            <Ionicons name="send" size={18} color={colors.text} />
+          </TouchableOpacity>
         </Input>
         {/* <EmojiPickerContainer visible={cabals.emojiPickerModalVisible}> */}
         {/* <Picker

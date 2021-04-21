@@ -25,14 +25,14 @@ export const manyUsers: UserProps[] = [
 export const message: MessageProps = {
   user: defaultUser,
   content: 'Hello friends!',
-  time: new Date(2019, 8, 21, 12, 0),
+  timestamp: new Date(2019, 8, 21, 12, 0).toISOString(),
 }
 
 export const longMessage: MessageProps = {
   user: defaultUser,
   content:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  time: new Date(2019, 8, 21, 12, 0),
+  timestamp: new Date(2019, 8, 21, 12, 0).toISOString(),
 }
 
 export const longMessageOtherUser: MessageProps = {
@@ -44,17 +44,17 @@ export const defaultMessages: MessageProps[] = [
   {
     user: defaultUser,
     content: 'Hello friends!',
-    time: new Date(2019, 8, 21, 12, 0),
+    timestamp: new Date(2019, 8, 21, 12, 0).toISOString(),
   },
   {
     user: defaultUsers[1],
     content: 'welcome to cabal :D',
-    time: new Date(2019, 8, 21, 12, 1),
+    timestamp: new Date(2019, 8, 21, 12, 1).toISOString(),
   },
   {
     user: defaultUsers[2],
     content: 'person: Thanks! So happy to be here! ❤️',
-    time: new Date(2019, 8, 21, 12, 2),
+    timestamp: new Date(2019, 8, 21, 12, 2).toISOString(),
   },
 ]
 
@@ -73,7 +73,7 @@ export const manyMessages: MessageProps[] = [
 export const defaultChannel: ChannelProps = {
   members: defaultUsers,
   name: 'default',
-  topic: 'the most default of all channels',
+  topic: 'welcome to cabal - see https://cabal.chat for more information',
 }
 
 export const defaultChannels: ChannelProps[] = [
