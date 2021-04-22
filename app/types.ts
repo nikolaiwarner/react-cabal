@@ -31,14 +31,20 @@ export interface ChannelProps {
   topic: string
 }
 
-export interface UserProps {
-  key: string
-  name: string
-  online: boolean
+export interface LocalizationContextProps {
+  locale: string
+  setLocale: React.Dispatch<React.SetStateAction<string>>
+  t: (scope: string, options?) => string
 }
 
 export interface MessageProps {
   content: string
   timestamp: string
   user: UserProps
+}
+
+export interface UserProps {
+  key: string
+  name: string
+  online: boolean
 }

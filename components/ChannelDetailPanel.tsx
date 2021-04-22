@@ -2,12 +2,13 @@ import { DrawerActions, useNavigation, useTheme } from '@react-navigation/native
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import { ScrollView, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
 import { CabalProps, ChannelProps, UserProps } from '../app/types'
 import { color } from 'react-native-reanimated'
 import { focusChannel, setSelectedUser } from '../features/cabals/cabalsSlice'
+import { LocalizationContext } from '../App'
 import { RootState } from '../app/rootReducer'
 import Button from './Button'
 import CabalList from './CabalList'
@@ -32,6 +33,7 @@ const RowText = styled.Text`
 
 export default function ChannelDetailPanel() {
   const { colors } = useTheme()
+  const { t } = useContext(LocalizationContext)
   const dispatch = useDispatch()
   const isMobile = useIsMobile()
   const navigation = useNavigation()
@@ -69,23 +71,23 @@ export default function ChannelDetailPanel() {
 
   return (
     <Container>
-      <PanelHeader title={'Chanel Details'} onPressClose={onPressClose} />
+      <PanelHeader title={t('channel_panel_header')} onPressClose={onPressClose} />
       <ScrollView>
         <PanelSection colors={colors}>
           <Button
             onPress={onPressLeaveChannel}
             style={{ maxWidth: 200, marginBottom: 16 }}
-            title="Leave Channel"
+            title={t('leave_channel_button')}
           />
           <Button
             onPress={onPressArchiveChannel}
             style={{ maxWidth: 200 }}
-            title="Archive Channel"
+            title={t('archive_channel_button')}
           />
         </PanelSection>
         <PanelSection colors={colors}>
           <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
-            Channel Members
+            {t('channel_members_list_header')}
           </SectionHeaderText>
           {currentCabal.currentChannel.members.map(renderPeerListItem)}
         </PanelSection>
