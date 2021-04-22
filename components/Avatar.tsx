@@ -1,13 +1,11 @@
-import { View } from 'react-native'
 import Identicon from 'react-blockies'
-import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/native'
 
-const AvatarContainer = styled.View`
-  width: 24px;
-  height: 24px;
-  border-radius: 24px;
+const Container = styled.View`
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
   background-color: #000;
   display: flex;
   align-items: center;
@@ -26,17 +24,17 @@ const Name = styled.Text`
   font-weight: 700;
 `
 
-export default function Avatar({ name, bgColor, onClick }) {
-  return (
-    <AvatarContainer>
-      <Name>{name?.substr(0, 2)}</Name>
-      {/* <Identicon seed={name} bgColor={bgColor || '#fff'} onClick={onClick} /> */}
-    </AvatarContainer>
-  )
+interface AvatarProps {
+  bgColor?: string
+  name?: string
+  onClick?: () => void
 }
 
-Avatar.propTypes = {
-  bgColor: PropTypes.string,
-  name: PropTypes.string,
-  onClick: PropTypes.func,
+export default function Avatar(props: AvatarProps) {
+  return (
+    <Container>
+      <Name>{props.name?.substr(0, 2)}</Name>
+      {/* <Identicon seed={name} bgColor={bgColor || '#fff'} onClick={onClick} /> */}
+    </Container>
+  )
 }

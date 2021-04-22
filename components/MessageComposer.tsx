@@ -1,4 +1,12 @@
-import { Button, Image, Platform, Text, TextInput, View } from 'react-native'
+import {
+  Button,
+  Image,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTheme } from '@react-navigation/native'
@@ -12,7 +20,6 @@ import { publishMessage } from '../features/cabals/messagesSlice'
 import { RootState } from '../app/rootReducer'
 import { setEmojiPickerModalVisible } from '../features/cabals/cabalsSlice'
 import { ChannelProps } from '../app/types'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const MessageComposerContainer = styled.View`
   border-top-color: ${(props) => props.colors.border};

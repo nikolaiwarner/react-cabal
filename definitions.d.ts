@@ -13,6 +13,9 @@ declare module '@react-navigation/native' {
       notification: string
 
       //Custom
+      buttonBackground: string
+      buttonBorder: string
+      buttonText: string
       textHighlight: string
       textSofter: string
     }

@@ -17,7 +17,7 @@ const MessageContainer = styled.View`
   flex-direction: row;
   margin-bottom: 16px;
   padding-top: 4px;
-  width: 100%;
+  /* width: 100%; */
 `
 
 const AvatarContainer = styled.View`
@@ -57,11 +57,12 @@ const Content = styled.View`
 `
 
 const StyledText = styled.Text`
-  margin-left: ${(props) => (props.indent ? '24px;' : '0px')};
+  margin-left: ${(props) => (props.indent ? '32px;' : '0px')};
   margin-top: ${(props) => (props.indent ? '-12px;' : '0px')};
   font-size: 16px;
   margin-right: 16px;
   color: ${(props) => props.colors.textSofter};
+  max-width: 300px;
 `
 
 export default function Message(props: MessageComponentProps) {

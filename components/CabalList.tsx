@@ -1,7 +1,7 @@
+import { DrawerActions, useTheme } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 import { Image, TouchableOpacity, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { useTheme } from '@react-navigation/native'
 import React from 'react'
 import styled from 'styled-components/native'
 
@@ -9,6 +9,7 @@ import { CabalProps } from '../app/types'
 import { focusCabal, showScreen } from '../features/cabals/cabalsSlice'
 import { RootState } from '../app/rootReducer'
 import { color } from 'react-native-reanimated'
+import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types'
 
 const CabalListContainer = styled.View`
   /* flex-grow: 1; */
@@ -58,7 +59,7 @@ const ItemText = styled.Text`
   font-weight: 700;
 `
 
-export default function CabalList() {
+export default function CabalList(props: { navigation: DrawerNavigationHelpers }) {
   const { colors } = useTheme()
   const dispatch = useDispatch()
 
@@ -66,14 +67,18 @@ export default function CabalList() {
 
   const onClickCabalListItem = (cabalKey) => {
     dispatch(focusCabal({ cabalKey }))
+    props.navigation.dispatch(DrawerActions.toggleDrawer())
+    props.navigation.navigate('ChannelScreen')
   }
 
   const onClickAddCabalButton = () => {
-    dispatch(showScreen('addCabal'))
+    props.navigation.dispatch(DrawerActions.toggleDrawer())
+    props.navigation.navigate('AddCabalScreen')
   }
 
   const onClickAppSettingsButton = () => {
-    dispatch(showScreen('settings'))
+    props.navigation.dispatch(DrawerActions.toggleDrawer())
+    props.navigation.navigate('AppSettingsScreen')
   }
 
   return (
@@ -96,7 +101,7 @@ export default function CabalList() {
               </Item>
             )
           })}
-        <Item onClick={onClickAddCabalButton}>
+        <Item onPress={onClickAddCabalButton}>
           <Feather name="plus" size={24} color={colors.textSofter} />
         </Item>
       </List>

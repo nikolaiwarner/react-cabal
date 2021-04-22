@@ -1,15 +1,14 @@
 import { AntDesign, Feather } from '@expo/vector-icons'
-import { Image, Text, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { useTheme } from '@react-navigation/native'
-import React from 'react'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 
 import { RootState } from '../app/rootReducer'
 import { ChannelProps } from '../app/types'
 import MenuButton from '../components/MenuButton'
 import useIsMobile from '../hooks/useIsMobile'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const ChannelHeaderContainer = styled.View`
   align-items: center;
@@ -32,6 +31,7 @@ const MenuTitleContainer = styled.View`
   align-items: center;
   display: flex;
   flex-direction: row;
+  flex-shrink: 1;
 `
 
 const Title = styled.View`
@@ -53,8 +53,7 @@ const ChannelInfo = styled.View`
 `
 
 const Topic = styled.Text`
-  /* font-size: 0.75;
-  color: #666; */
+  color: ${({ colors }) => colors.textSofter};
 `
 
 const Actions = styled.View`
@@ -67,12 +66,17 @@ export default function ChannelHeader() {
   const { colors } = useTheme()
   const dispatch = useDispatch()
   const isMobile = useIsMobile()
+  const navigation = useNavigation()
 
   const { currentCabal } = useSelector((state: RootState) => state.cabals)
 
-  const onClickFavorite = () => {}
-  const onClickSettings = () => {}
-  const onClickTopic = () => {}
+  const onPressFavorite = () => {}
+
+  const onPressChannelDetails = useCallback(() => {
+    navigation.navigate('ChannelDetailScreen', { title: 'Channel Details' })
+  }, [])
+
+  const onPressTopic = () => {}
 
   return (
     <ChannelHeaderContainer style={{ borderBottomColor: colors.border }}>
@@ -81,7 +85,7 @@ export default function ChannelHeader() {
         <Title>
           <ChannelName style={{ color: colors.text }}>
             {currentCabal.currentChannel.name}{' '}
-            <TouchableOpacity onPress={onClickFavorite}>
+            <TouchableOpacity onPress={onPressFavorite}>
               <AntDesign name="staro" size={18} color={colors.textSofter} />
             </TouchableOpacity>
           </ChannelName>
@@ -90,18 +94,14 @@ export default function ChannelHeader() {
               {currentCabal.currentChannel.members.length}{' '}
               <Feather name="users" size={12} color={colors.textHighlight} /> ⋅{' '}
             </Text>
-            <Topic
-              onClick={onClickTopic}
-              style={{ color: colors.textSofter }}
-              title="Click to add a topic"
-            >
+            <Topic colors={colors} onPress={onPressTopic} title="Click to add a topic">
               {currentCabal.currentChannel.topic ?? 'Click to add a topic'}
             </Topic>
           </ChannelInfo>
         </Title>
       </MenuTitleContainer>
       <Actions>
-        <TouchableOpacity onPress={onClickSettings}>
+        <TouchableOpacity onPress={onPressChannelDetails}>
           <Feather name="more-vertical" size={18} color={colors.textSofter} />
         </TouchableOpacity>
       </Actions>

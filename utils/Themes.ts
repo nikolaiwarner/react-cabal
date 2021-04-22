@@ -19,6 +19,9 @@ export const CabalLightTheme: ExtendedTheme = {
   colors: {
     ...DefaultTheme.colors,
     background: '#fff',
+    buttonBackground: '#fff',
+    buttonBorder: 'rgb(28, 28, 33)',
+    buttonText: 'rgb(28, 28, 33)',
     primary: 'rgb(90, 72, 236)',
     text: 'rgb(28, 28, 33)',
     textHighlight: 'rgb(168, 153, 223)',
@@ -31,6 +34,9 @@ export const CabalDarkTheme: ExtendedTheme = {
   colors: {
     ...DarkTheme.colors,
     background: 'rgb(28, 28, 33)',
+    buttonBackground: 'rgb(28, 28, 33)',
+    buttonBorder: '#fff',
+    buttonText: '#fff',
     border: 'rgb(70, 70, 70)',
     primary: 'rgb(90, 72, 236)',
     text: '#fff',

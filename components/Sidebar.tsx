@@ -1,4 +1,8 @@
 import { DrawerActions, useTheme } from '@react-navigation/native'
+import {
+  DrawerContentComponentProps,
+  DrawerContentOptions,
+} from '@react-navigation/drawer'
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import { ScrollView, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
@@ -6,12 +10,12 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 
 import { CabalProps, ChannelProps, UserProps } from '../app/types'
+import { color } from 'react-native-reanimated'
 import { focusChannel } from '../features/cabals/cabalsSlice'
 import { RootState } from '../app/rootReducer'
 import CabalList from './CabalList'
 import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
-import { color } from 'react-native-reanimated'
 
 const SidebarContainer = styled.SafeAreaView`
   display: flex;
@@ -33,7 +37,9 @@ const RowText = styled.Text`
   font-size: 16px;
 `
 
-export default function Sidebar() {
+export default function Sidebar(
+  props: DrawerContentComponentProps<DrawerContentOptions>,
+) {
   const { colors } = useTheme()
   const dispatch = useDispatch()
 
@@ -42,10 +48,10 @@ export default function Sidebar() {
   const renderChannelListItem = useCallback(
     (channel: ChannelProps, isActive?: boolean) => {
       const onPressRow = () => {
-        // navigation.dispatch(DrawerActions.toggleDrawer())
         dispatch(focusChannel({ cabalKey: currentCabal.key, channel }))
+        props.navigation.dispatch(DrawerActions.toggleDrawer())
+        props.navigation.navigate('ChannelScreen')
       }
-
       const color = isActive ? colors.text : colors.textSofter
       return (
         <Row key={channel.name} onPress={onPressRow}>
@@ -62,16 +68,16 @@ export default function Sidebar() {
 
   const renderPeerListItem = useCallback((user: UserProps, isActive?: boolean) => {
     const onPressRow = () => {
-      // navigation.dispatch(DrawerActions.toggleDrawer())
+      props.navigation.dispatch(DrawerActions.toggleDrawer())
+      props.navigation.navigate('UserProfileScreen')
     }
-
     return (
       <Row key={user.key} onPress={onPressRow}>
         <RowText style={{ color: isActive ? colors.text : colors.textSofter }}>
           <FontAwesome
+            color={user.online ? colors.primary : colors.textSofter}
             name="circle-o"
             size={12}
-            color={user.online ? colors.primary : colors.textSofter}
           />
           {'  '}
           {user.name ?? user.key}
@@ -82,23 +88,26 @@ export default function Sidebar() {
 
   return (
     <SidebarContainer style={{ backgroundColor: colors.background }}>
-      <CabalList />
+      <CabalList navigation={props.navigation} />
       {currentCabal && (
         <ScrollView>
-          <SidebarHeader />
+          <SidebarHeader navigation={props.navigation} />
           <SidebarList
             activeItem={currentCabal.currentChannel}
+            isClosed={true}
             items={currentCabal.channelsStarred}
             renderItem={renderChannelListItem}
             title="Starred"
           />
           <SidebarList
             activeItem={currentCabal.currentChannel}
+            isClosed={false}
             items={currentCabal.channelsJoined}
             renderItem={renderChannelListItem}
             title="Channels"
           />
           <SidebarList
+            isClosed={false}
             items={currentCabal.users}
             renderItem={renderPeerListItem}
             title="Peers"
