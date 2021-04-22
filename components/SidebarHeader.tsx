@@ -57,7 +57,9 @@ export default function SidebarHeader(props: { navigation: DrawerNavigationHelpe
     props.navigation.navigate('CabalSettingsScreen')
   }, [])
 
-  const onPressUserName = useCallback(() => {}, [])
+  const onPressUserName = useCallback(() => {
+    // TODO: rename user
+  }, [])
 
   return (
     <Container>

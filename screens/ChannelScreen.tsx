@@ -38,20 +38,30 @@ export default function ChannelScreen({ navigation }) {
   const { colors } = useTheme()
   const isMobile = useIsMobile()
 
-  return (
-    <Container>
-      <ChannelContainerWrapper>
+  if (isMobile) {
+    return (
+      <SafeAreaView>
         <ChannelContainer>
           <ChannelHeader />
           <MessageList />
           <MessageComposer />
         </ChannelContainer>
-      </ChannelContainerWrapper>
-      {!isMobile && (
+      </SafeAreaView>
+    )
+  } else {
+    return (
+      <Container>
+        <ChannelContainerWrapper>
+          <ChannelContainer>
+            <ChannelHeader />
+            <MessageList />
+            <MessageComposer />
+          </ChannelContainer>
+        </ChannelContainerWrapper>
         <Panel colors={colors}>
           <ChannelDetailPanel />
         </Panel>
-      )}
-    </Container>
-  )
+      </Container>
+    )
+  }
 }

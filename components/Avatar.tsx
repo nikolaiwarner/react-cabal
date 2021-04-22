@@ -3,18 +3,13 @@ import React from 'react'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
-  width: 32px;
-  height: 32px;
-  border-radius: 32px;
-  background-color: #000;
-  display: flex;
   align-items: center;
+  background-color: #000;
+  border-radius: ${(props) => props.size ?? '32px'};
+  display: flex;
+  height: ${(props) => props.size ?? '32px'};
   justify-content: center;
-
-  /* .identicon {
-    overflow: hidden;
-    border-radius: 10rem;
-  } */
+  width: ${(props) => props.size ?? '32px'};
 `
 
 const Name = styled.Text`
@@ -28,11 +23,12 @@ interface AvatarProps {
   bgColor?: string
   name?: string
   onClick?: () => void
+  size?: number
 }
 
 export default function Avatar(props: AvatarProps) {
   return (
-    <Container>
+    <Container size={props.size}>
       <Name>{props.name?.substr(0, 2)}</Name>
       {/* <Identicon seed={name} bgColor={bgColor || '#fff'} onClick={onClick} /> */}
     </Container>

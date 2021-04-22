@@ -18,7 +18,7 @@ import { generateUniqueName } from '../../utils/helpers'
 //   setUsername as sendSetUsername,
 //   focusCabal as sendfocusCabal,
 // } from '../../utils/cabal-render-ipc'
-import { AppProps, CabalChannelProps, ChannelProps } from '../../app/types'
+import { AppProps, CabalChannelProps, ChannelProps, UserProps } from '../../app/types'
 
 import { defaultCabal, defaultCabals } from '../../utils/fakeData'
 
@@ -37,6 +37,7 @@ const initialState: AppProps = {
   currentCabal: defaultCabal,
   currentScreen: 'loading',
   emojiPickerModalVisible: false,
+  selectedUser: null,
 }
 
 const cabalsSlice = createSlice({
@@ -87,6 +88,9 @@ const cabalsSlice = createSlice({
       })
       state.cabals = cabals
     },
+    setSelectedUser(state, action: PayloadAction<UserProps>) {
+      state.selectedUser = action.payload
+    },
   },
 })
 
@@ -100,6 +104,7 @@ export const {
   setCurrentChannel,
   setCurrentScreen,
   setEmojiPickerModalVisible,
+  setSelectedUser,
 } = cabalsSlice.actions
 
 export default cabalsSlice.reducer

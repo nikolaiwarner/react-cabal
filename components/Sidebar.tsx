@@ -11,7 +11,7 @@ import styled from 'styled-components/native'
 
 import { CabalProps, ChannelProps, UserProps } from '../app/types'
 import { color } from 'react-native-reanimated'
-import { focusChannel } from '../features/cabals/cabalsSlice'
+import { focusChannel, setSelectedUser } from '../features/cabals/cabalsSlice'
 import { RootState } from '../app/rootReducer'
 import CabalList from './CabalList'
 import SidebarHeader from './SidebarHeader'
@@ -68,6 +68,7 @@ export default function Sidebar(
 
   const renderPeerListItem = useCallback((user: UserProps, isActive?: boolean) => {
     const onPressRow = () => {
+      dispatch(setSelectedUser(user))
       props.navigation.dispatch(DrawerActions.toggleDrawer())
       props.navigation.navigate('UserProfileScreen')
     }

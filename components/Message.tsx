@@ -1,10 +1,12 @@
-import { Text, View } from 'react-native'
-import { useTheme } from '@react-navigation/native'
+import { TouchableOpacity } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { useNavigation, useTheme } from '@react-navigation/native'
 import moment from 'moment'
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components/native'
 
 import { MessageProps } from '../app/types'
+import { setSelectedUser } from '../features/cabals/cabalsSlice'
 import Avatar from './Avatar'
 
 interface MessageComponentProps {
@@ -20,13 +22,14 @@ const MessageContainer = styled.View`
   /* width: 100%; */
 `
 
-const AvatarContainer = styled.View`
+const AvatarContainer = styled.TouchableOpacity`
   display: flex;
   padding-right: 16px;
 `
 
 const Name = styled.Text`
   align-items: flex-end;
+  color: ${({ colors }) => colors.text};
   display: flex;
   font-size: 16px;
   font-weight: 700;
@@ -35,6 +38,7 @@ const Name = styled.Text`
 `
 
 const Timestamp = styled.Text`
+  color: ${({ colors }) => colors.textSofter};
   font-size: 12px;
   font-weight: 400;
 
@@ -57,21 +61,23 @@ const Content = styled.View`
 `
 
 const StyledText = styled.Text`
-  margin-left: ${(props) => (props.indent ? '32px;' : '0px')};
-  margin-top: ${(props) => (props.indent ? '-12px;' : '0px')};
+  color: ${({ colors }) => colors.textSofter};
   font-size: 16px;
+  margin-left: ${(props) => (props.indent ? '32px;' : '0px')};
   margin-right: 16px;
-  color: ${(props) => props.colors.textSofter};
-  max-width: 300px;
+  margin-top: ${(props) => (props.indent ? '-12px;' : '0px')};
+  /* max-width: 800px; */
 `
 
 export default function Message(props: MessageComponentProps) {
   const { colors } = useTheme()
+  const dispatch = useDispatch()
+  const navigation = useNavigation()
 
   const renderDate = () => {
     const time = moment(props.message.timestamp)
     return (
-      <Timestamp style={{ color: colors.textSofter }}>
+      <Timestamp colors={colors} style={{ color: colors.textSofter }}>
         ⋅ {time.format('h:mm A')}
         {/* <View className="date--full">{time.format('LL')}</View> */}
       </Timestamp>
@@ -83,24 +89,27 @@ export default function Message(props: MessageComponentProps) {
     return content
   }
 
+  const onPressUser = useCallback(() => {
+    dispatch(setSelectedUser(props.message.user))
+    navigation.navigate('UserProfileScreen')
+  }, [])
+
   return (
     <MessageContainer>
-      <AvatarContainer>
+      <AvatarContainer onPress={onPressUser}>
         {props.repeatedName ? null : (
           <Avatar name={props.message.user.name || 'conspirator'} />
         )}
       </AvatarContainer>
       <Content>
         {props.repeatedName ? null : (
-          <Name style={{ color: colors.text }}>
-            {props.message.user.name || 'conspirator'} {renderDate()}
-          </Name>
+          <TouchableOpacity onPress={onPressUser}>
+            <Name colors={colors}>
+              {props.message.user.name || 'conspirator'} {renderDate()}
+            </Name>
+          </TouchableOpacity>
         )}
-        <StyledText
-          colors={colors}
-          // style={{ color: colors.text }}
-          indent={!!props.repeatedName}
-        >
+        <StyledText colors={colors} indent={!!props.repeatedName}>
           {enrichText(props.message.content)}
         </StyledText>
       </Content>

@@ -6,6 +6,7 @@ export interface AppProps {
   currentCabal?: CabalProps
   currentScreen: 'addCabal' | 'main' | 'loading' | 'settings'
   emojiPickerModalVisible: boolean
+  selectedUser: UserProps
 }
 
 export interface CabalProps {

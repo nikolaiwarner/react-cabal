@@ -7,11 +7,12 @@ import styled from 'styled-components/native'
 
 import { CabalProps, ChannelProps, UserProps } from '../app/types'
 import { color } from 'react-native-reanimated'
-import { focusChannel } from '../features/cabals/cabalsSlice'
+import { focusChannel, setSelectedUser } from '../features/cabals/cabalsSlice'
 import { RootState } from '../app/rootReducer'
 import Button from './Button'
 import CabalList from './CabalList'
 import PanelHeader from './PanelHeader'
+import PanelSection from './PanelSection'
 import SectionHeaderText from './SectionHeaderText'
 import useIsMobile from '../hooks/useIsMobile'
 
@@ -29,12 +30,6 @@ const RowText = styled.Text`
   font-size: 16px;
 `
 
-const Section = styled.View`
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ colors }) => colors.border};
-  padding: 16px;
-`
-
 export default function ChannelDetailPanel() {
   const { colors } = useTheme()
   const dispatch = useDispatch()
@@ -45,7 +40,8 @@ export default function ChannelDetailPanel() {
 
   const renderPeerListItem = useCallback((user: UserProps) => {
     const onPressRow = () => {
-      navigation.navigate('UserProfileScreen', { user })
+      dispatch(setSelectedUser(user))
+      navigation.navigate('UserProfileScreen')
     }
 
     return (
@@ -75,7 +71,7 @@ export default function ChannelDetailPanel() {
     <Container>
       <PanelHeader title={'Chanel Details'} onPressClose={onPressClose} />
       <ScrollView>
-        <Section colors={colors}>
+        <PanelSection colors={colors}>
           <Button
             onPress={onPressLeaveChannel}
             style={{ maxWidth: 200, marginBottom: 16 }}
@@ -86,13 +82,13 @@ export default function ChannelDetailPanel() {
             style={{ maxWidth: 200 }}
             title="Archive Channel"
           />
-        </Section>
-        <Section colors={colors}>
+        </PanelSection>
+        <PanelSection colors={colors}>
           <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
             Channel Members
           </SectionHeaderText>
           {currentCabal.currentChannel.members.map(renderPeerListItem)}
-        </Section>
+        </PanelSection>
       </ScrollView>
     </Container>
   )
