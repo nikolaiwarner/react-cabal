@@ -16,6 +16,7 @@ import { RootState } from '../app/rootReducer'
 import CabalList from './CabalList'
 import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const SidebarContainer = styled.SafeAreaView`
   display: flex;
@@ -44,6 +45,21 @@ export default function Sidebar(
   const dispatch = useDispatch()
 
   const { currentCabal } = useSelector((state: RootState) => state.cabals)
+
+  const onPressOpenChannelBrowser = useCallback(() => {
+    props.navigation.dispatch(DrawerActions.toggleDrawer())
+    props.navigation.navigate('ChannelBrowserScreen')
+  }, [])
+  const renderChannelListHeaderActionButton = useCallback(() => {
+    return (
+      <TouchableOpacity
+        onPress={onPressOpenChannelBrowser}
+        style={{ paddingLeft: 16, paddingRight: 16 }}
+      >
+        <Feather name="plus" size={18} color={colors.text} />
+      </TouchableOpacity>
+    )
+  }, [])
 
   const renderChannelListItem = useCallback(
     (channel: ChannelProps, isActive?: boolean) => {
@@ -104,6 +120,7 @@ export default function Sidebar(
             activeItem={currentCabal.currentChannel}
             isClosed={false}
             items={currentCabal.channelsJoined}
+            renderHeaderActionButton={renderChannelListHeaderActionButton}
             renderItem={renderChannelListItem}
             title="Channels"
           />

@@ -1,12 +1,13 @@
 import { AntDesign, Feather } from '@expo/vector-icons'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useTheme } from '@react-navigation/native'
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
-import { RootState } from '../app/rootReducer'
 import { ChannelProps } from '../app/types'
+import { LocalizationContext } from '../App'
+import { RootState } from '../app/rootReducer'
 import MenuButton from '../components/MenuButton'
 import useIsMobile from '../hooks/useIsMobile'
 
@@ -20,11 +21,9 @@ const ChannelHeaderContainer = styled.View`
   padding-bottom: 8px;
   padding-top: 8px;
   padding: 16px;
-  /* -webkit-app-region: drag;
-  padding-top: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
-  margin-top: 100px; */
+
+  /* TODO: for electron:
+  -webkit-app-region: drag; */
 `
 
 const MenuTitleContainer = styled.View`
@@ -34,17 +33,13 @@ const MenuTitleContainer = styled.View`
   flex-shrink: 1;
 `
 
-const Title = styled.View`
-  /* align-items: center; */
-`
+const Title = styled.View``
 
 const ChannelName = styled.Text`
+  color: ${({ colors }) => colors.text};
   font-size: 20px;
   font-weight: 900;
   margin-bottom: 4px;
-  /* align-items: center;
-  display: flex;
-  */
 `
 
 const ChannelInfo = styled.View`
@@ -56,14 +51,11 @@ const Topic = styled.Text`
   color: ${({ colors }) => colors.textSofter};
 `
 
-const Actions = styled.View`
-  /* display: flex;
-  text-align: right;
-  vertical-align: middle; */
-`
+const Actions = styled.View``
 
 export default function ChannelHeader() {
   const { colors } = useTheme()
+  const { t } = useContext(LocalizationContext)
   const dispatch = useDispatch()
   const isMobile = useIsMobile()
   const navigation = useNavigation()
@@ -73,7 +65,7 @@ export default function ChannelHeader() {
   const onPressFavorite = () => {}
 
   const onPressChannelDetails = useCallback(() => {
-    navigation.navigate('ChannelDetailScreen', { title: 'Channel Details' })
+    navigation.navigate('ChannelDetailScreen')
   }, [])
 
   const onPressTopic = () => {}
@@ -83,7 +75,7 @@ export default function ChannelHeader() {
       <MenuTitleContainer>
         {isMobile && <MenuButton />}
         <Title>
-          <ChannelName style={{ color: colors.text }}>
+          <ChannelName colors={colors}>
             {currentCabal.currentChannel.name}{' '}
             <TouchableOpacity onPress={onPressFavorite}>
               <AntDesign name="staro" size={18} color={colors.textSofter} />
@@ -94,8 +86,12 @@ export default function ChannelHeader() {
               {currentCabal.currentChannel.members.length}{' '}
               <Feather name="users" size={12} color={colors.textHighlight} /> ⋅{' '}
             </Text>
-            <Topic colors={colors} onPress={onPressTopic} title="Click to add a topic">
-              {currentCabal.currentChannel.topic ?? 'Click to add a topic'}
+            <Topic
+              colors={colors}
+              onPress={onPressTopic}
+              title={t('channel_topic_placeholder')}
+            >
+              {currentCabal.currentChannel.topic ?? t('channel_topic_placeholder')}
             </Topic>
           </ChannelInfo>
         </Title>

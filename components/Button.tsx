@@ -21,7 +21,7 @@ const Title = styled.Text`
 
 interface ButtonProps {
   onPress: () => void
-  style: ViewStyle
+  style?: ViewStyle
   title: string
 }
 

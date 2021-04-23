@@ -12,9 +12,12 @@ const SidebarListContainer = styled.View`
 `
 
 const ListHeader = styled.TouchableOpacity`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   padding-bottom: 4px;
   padding-left: 16px;
-  padding-right: 16px;
   padding-top: 12px;
 `
 
@@ -27,6 +30,7 @@ const ListBody = styled.View``
 
 interface SidebarListProps {
   activeItem?: any
+  renderHeaderActionButton?: () => ReactElement
   isClosed?: boolean
   items?: any[]
   onClickRow?: (item: any) => void
@@ -50,6 +54,7 @@ export default function SidebarList(props: SidebarListProps) {
           {'  '}
           {props.title}
         </Title>
+        {props.renderHeaderActionButton && props.renderHeaderActionButton()}
       </ListHeader>
       {!props.isClosed && (
         <ListBody>
