@@ -3,28 +3,22 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
-import { StyleSheet, Text, useColorScheme, View } from 'react-native'
+import { useColorScheme } from 'react-native'
 import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
-import React, { createContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import { CabalDarkTheme, CabalLightTheme } from './utils/Themes'
-import { LocalizationContextProps } from './app/types'
+import { LocalizationContext } from './utils/Translations'
 import AddCabalScreen from './screens/AddCabalScreen'
 import CabalSettingsScreen from './screens/CabalSettingsScreen'
 import ChannelBrowserScreen from './screens/ChannelBrowserScreen'
 import ChannelDetailScreen from './screens/ChannelDetailScreen'
 import ChannelScreen from './screens/ChannelScreen'
-import Translations from './utils/Translations'
 import Sidebar from './components/Sidebar'
 import store from './app/store'
 import useIsMobile from './hooks/useIsMobile'
 import UserProfileScreen from './screens/UserProfileScreen'
-
-i18n.fallbacks = true
-i18n.translations = Translations
-
-export const LocalizationContext = createContext<Partial<LocalizationContextProps>>({})
 
 const Stack = createStackNavigator()
 const Drawer = createDrawerNavigator()

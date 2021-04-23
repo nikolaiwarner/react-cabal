@@ -7,6 +7,7 @@ import styled from 'styled-components/native'
 import { RootState } from '../app/rootReducer'
 import Avatar from './Avatar'
 import Button from './Button'
+import HelpText from './HelpText'
 import PanelHeader from './PanelHeader'
 import PanelSection from './PanelSection'
 import SectionHeaderText from './SectionHeaderText'
@@ -24,12 +25,6 @@ const Name = styled.Text`
 const UserKey = styled.Text`
   color: ${({ colors }) => colors.textSofter};
   margin-top: 16px;
-`
-
-const HelpText = styled.Text`
-  color: ${({ colors }) => colors.textSofter};
-  margin-top: 16px;
-  font-size: 14px;
 `
 
 export default function UserProfilePanel() {

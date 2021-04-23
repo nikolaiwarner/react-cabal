@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
-import { LocalizationContext } from '../App'
+import { LocalizationContext } from '../utils/Translations'
 import { RootState } from '../app/rootReducer'
 import Button from '../components/Button'
 import MenuButton from '../components/MenuButton'

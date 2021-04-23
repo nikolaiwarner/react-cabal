@@ -1,28 +1,82 @@
-import { Button, TextInput, Text, View, SafeAreaView } from 'react-native'
+import { TextInput, Text, View, SafeAreaView, ScrollView, Switch } from 'react-native'
 import { NavigationContainer, DrawerActions, useTheme } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
-import * as React from 'react'
+import React, { useCallback, useContext } from 'react'
 
+import { LocalizationContext } from '../utils/Translations'
 import { RootState } from '../app/rootReducer'
-import MenuButton from '../components/MenuButton'
+import Button from '../components/Button'
+import HelpText from '../components/HelpText'
+import PanelHeader from '../components/PanelHeader'
+import PanelSection from '../components/PanelSection'
+import SectionHeaderText from '../components/SectionHeaderText'
 
 function CabalSettingsScreen({ navigation }) {
   const { colors } = useTheme()
+  const { t } = useContext(LocalizationContext)
 
   const { cabals, currentCabal } = useSelector((state: RootState) => state.cabals)
 
+  const onPressClose = useCallback(() => {
+    navigation.navigate('ChannelScreen')
+  }, [])
+
+  const onPressCopyCabalKey = useCallback(() => {}, [currentCabal.key])
+
+  const onPressRemoveCabal = useCallback(() => {}, [])
+
+  const shareableCabalKey = useCallback(() => {
+    // TODO
+    const adminParams = ''
+    const modParams = ''
+    return `cabal://${currentCabal.key}?${adminParams}&${modParams}`
+  }, [currentCabal.key])
+
   return (
     <SafeAreaView>
-      <MenuButton />
-      <Text>
-        Invite People Share this key with others to let them join the cabal.
-        cabal://1fdc83d08699781adfeacba9aa6bb880203d5e61357e5667ccbcc12e4a9065ad Copy Key
-        Cabal Name Set a local name for this cabal. Only you can see this. Cabal Club
-        Enable desktop notifications Display a notification for new messages for this
-        cabal when a channel is in the background. Remove this cabal from this Cabal
-        Desktop client The local cabal database will remain and may also exist on peer
-        clients. Remove Cabal (1fdc83d0...)
-      </Text>
+      <PanelHeader onPressClose={onPressClose} title={t('cabal_settings_title')} />
+      <ScrollView>
+        <PanelSection colors={colors}>
+          <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
+            {t('cabal_settings_invite_header')}
+          </SectionHeaderText>
+          <HelpText colors={colors}>{t('cabal_settings_invite_body')}</HelpText>
+          <TextInput value={shareableCabalKey()} />
+          <Button
+            title={t('cabal_settings_copy_key_button')}
+            onPress={onPressCopyCabalKey}
+          />
+        </PanelSection>
+
+        <PanelSection colors={colors}>
+          <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
+            {t('cabal_settings_cabal_name_header')}
+          </SectionHeaderText>
+          <HelpText colors={colors}>{t('cabal_settings_cabal_name_body')}</HelpText>
+          <TextInput value={currentCabal.name} />
+        </PanelSection>
+
+        <PanelSection colors={colors}>
+          <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
+            {t('cabal_settings_notifications_header')}
+          </SectionHeaderText>
+          <HelpText colors={colors}>{t('cabal_settings_notifications_body')}</HelpText>
+          <Switch />
+        </PanelSection>
+
+        <PanelSection colors={colors}>
+          <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
+            {t('cabal_settings_remove_cabal_header')}
+          </SectionHeaderText>
+          <HelpText colors={colors}>{t('cabal_settings_remove_cabal_body')}</HelpText>
+          <Button
+            title={t('cabal_settings_remove_cabal_button', {
+              key: currentCabal.key.substr(0, 8),
+            })}
+            onPress={onPressRemoveCabal}
+          ></Button>
+        </PanelSection>
+      </ScrollView>
     </SafeAreaView>
   )
 }

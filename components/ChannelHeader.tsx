@@ -6,7 +6,7 @@ import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
 import { ChannelProps } from '../app/types'
-import { LocalizationContext } from '../App'
+import { LocalizationContext } from '../utils/Translations'
 import { RootState } from '../app/rootReducer'
 import MenuButton from '../components/MenuButton'
 import useIsMobile from '../hooks/useIsMobile'
