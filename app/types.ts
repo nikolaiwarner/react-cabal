@@ -39,6 +39,7 @@ export interface LocalizationContextProps {
 
 export interface MessageProps {
   content: string
+  key: string
   timestamp: string
   user: UserProps
 }

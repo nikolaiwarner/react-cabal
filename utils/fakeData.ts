@@ -42,19 +42,22 @@ export const longMessageOtherUser: MessageProps = {
 
 export const defaultMessages: MessageProps[] = [
   {
-    user: defaultUser,
     content: 'Hello friends!',
-    timestamp: new Date(2019, 8, 21, 12, 0).toISOString(),
+    key: '1234',
+    timestamp: new Date(2019, 8, 20, 12, 0).toISOString(),
+    user: defaultUser,
   },
   {
-    user: defaultUsers[1],
     content: 'welcome to cabal :D',
+    key: '1235',
     timestamp: new Date(2019, 8, 21, 12, 1).toISOString(),
+    user: defaultUsers[1],
   },
   {
-    user: defaultUsers[2],
     content: 'person: Thanks! So happy to be here! ❤️',
+    key: '1236',
     timestamp: new Date(2019, 8, 21, 12, 2).toISOString(),
+    user: defaultUsers[2],
   },
 ]
 
