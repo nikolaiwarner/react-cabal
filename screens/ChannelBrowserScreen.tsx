@@ -27,9 +27,13 @@ const Name = styled.Text`
   margin-bottom: 4px;
 `
 
-const MemberCount = styled.Text``
+const MemberCount = styled.Text`
+  color: ${({ colors }) => colors.textHighlight};
+`
 
-const Topic = styled.Text``
+const Topic = styled.Text`
+  color: ${({ colors }) => colors.textSofter};
+`
 
 function ChannelBrowserScreen({ navigation }) {
   const { colors } = useTheme()

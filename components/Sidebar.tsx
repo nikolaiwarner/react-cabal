@@ -4,19 +4,22 @@ import {
   DrawerContentOptions,
 } from '@react-navigation/drawer'
 import { Feather, FontAwesome } from '@expo/vector-icons'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
 import { CabalProps, ChannelProps, UserProps } from '../app/types'
-import { color } from 'react-native-reanimated'
-import { focusChannel, setSelectedUser } from '../features/cabals/cabalsSlice'
+import {
+  focusChannel,
+  setSelectedUser,
+  updateSidebarList,
+} from '../features/cabals/cabalsSlice'
+import { LocalizationContext } from '../utils/Translations'
 import { RootState } from '../app/rootReducer'
 import CabalList from './CabalList'
 import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const SidebarContainer = styled.SafeAreaView`
   display: flex;
@@ -42,14 +45,16 @@ export default function Sidebar(
   props: DrawerContentComponentProps<DrawerContentOptions>,
 ) {
   const { colors } = useTheme()
+  const { t } = useContext(LocalizationContext)
   const dispatch = useDispatch()
 
-  const { currentCabal } = useSelector((state: RootState) => state.cabals)
+  const { currentCabal, sidebarLists } = useSelector((state: RootState) => state.cabals)
 
   const onPressOpenChannelBrowser = useCallback(() => {
     props.navigation.dispatch(DrawerActions.toggleDrawer())
     props.navigation.navigate('ChannelBrowserScreen')
   }, [])
+
   const renderChannelListHeaderActionButton = useCallback(() => {
     return (
       <TouchableOpacity
@@ -109,27 +114,49 @@ export default function Sidebar(
       {currentCabal && (
         <ScrollView>
           <SidebarHeader navigation={props.navigation} />
-          <SidebarList
-            activeItem={currentCabal.currentChannel}
-            isClosed={true}
-            items={currentCabal.channelsStarred}
-            renderItem={renderChannelListItem}
-            title="Starred"
-          />
-          <SidebarList
-            activeItem={currentCabal.currentChannel}
-            isClosed={false}
-            items={currentCabal.channelsJoined}
-            renderHeaderActionButton={renderChannelListHeaderActionButton}
-            renderItem={renderChannelListItem}
-            title="Channels"
-          />
-          <SidebarList
-            isClosed={false}
-            items={currentCabal.users}
-            renderItem={renderPeerListItem}
-            title="Peers"
-          />
+          {sidebarLists.map((sidebarList) => {
+            if (sidebarList.id === 'favorites') {
+              return (
+                <SidebarList
+                  activeItem={currentCabal.currentChannel}
+                  items={currentCabal.channelsFavorites}
+                  renderItem={renderChannelListItem}
+                  sidebarList={sidebarList}
+                  title={t('sidebarlist_favorites')}
+                />
+              )
+            } else if (sidebarList.id === 'channels_joined') {
+              return (
+                <SidebarList
+                  activeItem={currentCabal.currentChannel}
+                  items={currentCabal.channelsJoined}
+                  renderHeaderActionButton={renderChannelListHeaderActionButton}
+                  renderItem={renderChannelListItem}
+                  sidebarList={sidebarList}
+                  title={t('sidebarlist_channels')}
+                />
+              )
+            } else if (sidebarList.id === 'peers') {
+              return (
+                <SidebarList
+                  items={currentCabal.users}
+                  renderItem={renderPeerListItem}
+                  sidebarList={sidebarList}
+                  title={t('sidebarlist_peers')}
+                />
+              )
+            } else {
+              // TODO: Custom lists
+              // return (
+              //   <SidebarList
+              //     items={}
+              //     renderItem={}
+              //     sidebarList={sidebarList}
+              //     title={sidebarList.title}
+              //   />
+              // )
+            }
+          })}
         </ScrollView>
       )}
     </SidebarContainer>

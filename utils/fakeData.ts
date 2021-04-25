@@ -100,7 +100,7 @@ export const manyChannels: ChannelProps[] = [
 export const defaultCabal: CabalProps = {
   channels: defaultChannels,
   channelsJoined: defaultChannels.slice(0, 3),
-  channelsStarred: [defaultChannels[1]],
+  channelsFavorites: [defaultChannels[1]],
   currentChannel: defaultChannels[0],
   key: '0201400f1aa2e3076a3f17f4521b2cc41e258c446cdaa44742afe6e1b9fd5f82',
   name: 'Cabal Club',

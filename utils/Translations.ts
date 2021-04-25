@@ -30,6 +30,9 @@ const Translations = {
     channel_panel_header: 'Channel Details',
     channel_topic_placeholder: 'Click to add a topic',
     leave_channel_button: 'Leave Channel',
+    sidebarlist_channels: 'Channels',
+    sidebarlist_favorites: 'Favorites',
+    sidebarlist_peers: 'Peers',
   },
   es: {
     archive_channel_button: 'Archivar este canal',
@@ -57,6 +60,9 @@ const Translations = {
     channel_panel_header: 'Detalles del canal',
     channel_topic_placeholder: 'Haga clic para agregar un tema',
     leave_channel_button: 'Salir de este canal',
+    sidebarlist_channels: 'Canales',
+    sidebarlist_favorites: 'Favoritas',
+    sidebarlist_peers: 'Compañeras',
   },
 }
 

@@ -4,6 +4,8 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { ReactElement, useCallback } from 'react'
 import styled from 'styled-components/native'
+import { updateSidebarList } from '../features/cabals/cabalsSlice'
+import { SidebarListProps, SidebarListsProps } from '../app/types'
 
 const SidebarListContainer = styled.View`
   border-color: ${(props) => props.colors.border};
@@ -11,7 +13,7 @@ const SidebarListContainer = styled.View`
   padding-bottom: 12px;
 `
 
-const ListHeader = styled.TouchableOpacity`
+const ListHeader = styled.View`
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -21,6 +23,13 @@ const ListHeader = styled.TouchableOpacity`
   padding-top: 12px;
 `
 
+const TitleContainer = styled.TouchableOpacity`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
 const Title = styled.Text`
   color: ${(props) => props.colors.textSofter};
   text-transform: uppercase;
@@ -28,35 +37,47 @@ const Title = styled.Text`
 
 const ListBody = styled.View``
 
-interface SidebarListProps {
+interface SidebarListComponentProps {
   activeItem?: any
-  renderHeaderActionButton?: () => ReactElement
-  isClosed?: boolean
   items?: any[]
   onClickRow?: (item: any) => void
   onToggleClosed?: () => void
+  renderHeaderActionButton?: () => ReactElement
   renderItem: (item: any, isActive?: boolean) => ReactElement
+  sidebarList: SidebarListProps
   title: string
 }
 
-export default function SidebarList(props: SidebarListProps) {
+export default function SidebarList(props: SidebarListComponentProps) {
   const { colors } = useTheme()
+  const dispatch = useDispatch()
+
+  const onPressToggleSidebarList = () => {
+    dispatch(
+      updateSidebarList({
+        ...props.sidebarList,
+        open: !props.sidebarList.open,
+      }),
+    )
+  }
 
   return (
     <SidebarListContainer colors={colors}>
-      <ListHeader onPress={props.onToggleClosed}>
-        <Title colors={colors}>
-          <Octicons
-            name={props.isClosed ? 'triangle-right' : 'triangle-down'}
-            size={12}
-            color={colors.textSofter}
-          />
-          {'  '}
-          {props.title}
-        </Title>
+      <ListHeader>
+        <TitleContainer onPress={onPressToggleSidebarList}>
+          <Title colors={colors}>
+            <Octicons
+              name={props.sidebarList.open ? 'triangle-down' : 'triangle-right'}
+              size={12}
+              color={colors.textSofter}
+            />
+            {'  '}
+            {props.title}
+          </Title>
+        </TitleContainer>
         {props.renderHeaderActionButton && props.renderHeaderActionButton()}
       </ListHeader>
-      {!props.isClosed && (
+      {props.sidebarList.open && (
         <ListBody>
           {props.items?.length &&
             props.items?.map((item) => props.renderItem(item, item === props.activeItem))}

@@ -18,7 +18,13 @@ import { generateUniqueName } from '../../utils/helpers'
 //   setUsername as sendSetUsername,
 //   focusCabal as sendfocusCabal,
 // } from '../../utils/cabal-render-ipc'
-import { AppProps, CabalChannelProps, ChannelProps, UserProps } from '../../app/types'
+import {
+  AppProps,
+  CabalChannelProps,
+  ChannelProps,
+  SidebarListProps,
+  UserProps,
+} from '../../app/types'
 
 import { defaultCabal, defaultCabals } from '../../utils/fakeData'
 
@@ -26,8 +32,6 @@ interface TextInputCommandProps {
   cabalKey: string
   text: string
 }
-
-console.log({ defaultCabal })
 
 const initialState: AppProps = {
   cabalKeys: ['1eef9ad64e284691b7c6f6310e39204b5f92765e36102046caaa6a7ff8c02d74'],
@@ -38,6 +42,11 @@ const initialState: AppProps = {
   currentScreen: 'loading',
   emojiPickerModalVisible: false,
   selectedUser: null,
+  sidebarLists: [
+    { id: 'favorites', open: true },
+    { id: 'channels_joined', open: true },
+    { id: 'peers', open: true },
+  ],
 }
 
 const cabalsSlice = createSlice({
@@ -91,6 +100,11 @@ const cabalsSlice = createSlice({
     setSelectedUser(state, action: PayloadAction<UserProps>) {
       state.selectedUser = action.payload
     },
+    updateSidebarList(state, action: PayloadAction<SidebarListProps>) {
+      state.sidebarLists = state.sidebarLists.map((panel) => {
+        return panel.id === action.payload.id ? action.payload : panel
+      })
+    },
   },
 })
 
@@ -105,6 +119,7 @@ export const {
   setCurrentScreen,
   setEmojiPickerModalVisible,
   setSelectedUser,
+  updateSidebarList,
 } = cabalsSlice.actions
 
 export default cabalsSlice.reducer

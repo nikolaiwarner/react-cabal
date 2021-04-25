@@ -7,12 +7,13 @@ export interface AppProps {
   currentScreen: 'addCabal' | 'main' | 'loading' | 'settings'
   emojiPickerModalVisible: boolean
   selectedUser: UserProps
+  sidebarLists: SidebarListsProps
 }
 
 export interface CabalProps {
   channels: ChannelProps[]
   channelsJoined: ChannelProps[]
-  channelsStarred: ChannelProps[]
+  channelsFavorites: ChannelProps[]
   currentChannel: ChannelProps
   key: string
   name?: string
@@ -48,4 +49,12 @@ export interface UserProps {
   key: string
   name: string
   online: boolean
+}
+
+export type SidebarListsProps = SidebarListProps[]
+
+export interface SidebarListProps {
+  id: string
+  open: boolean
+  title?: string
 }
