@@ -6,6 +6,13 @@ export const LocalizationContext = createContext<Partial<LocalizationContextProp
 
 const Translations = {
   en: {
+    add_cabal_join_button: 'Join',
+    add_cabal_join_cabal_section_title: 'Join a Cabal',
+    add_cabal_key_input_placeholder: 'cabal://',
+    add_cabal_name_input_placeholder: 'Pick a nickname (optional)',
+    add_cabal_new_cabal_button: 'Create',
+    add_cabal_new_cabal_section_title: 'Create a New Cabal',
+    add_cabal_title: 'Add a Cabal',
     archive_channel_button: 'Archive Channel',
     cabal_settings_copy_key_button: 'Copy Key',
     cabal_settings_invite_header: 'Invite People',
@@ -35,6 +42,13 @@ const Translations = {
     sidebarlist_peers: 'Peers',
   },
   es: {
+    add_cabal_join_button: 'Entrar',
+    add_cabal_join_cabal_section_title: 'Únete a un Cabal',
+    add_cabal_key_input_placeholder: 'cabal://',
+    add_cabal_name_input_placeholder: 'Elija un apodo (opcional)',
+    add_cabal_new_cabal_button: 'Crear',
+    add_cabal_new_cabal_section_title: 'Crea una nueva Cabal',
+    add_cabal_title: 'Agregar un Cabal',
     archive_channel_button: 'Archivar este canal',
     cabal_settings_cabal_name_header: 'Nombre',
     cabal_settings_cabal_name_body:

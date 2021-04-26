@@ -11,6 +11,7 @@ const Container = styled.TouchableOpacity`
   border-radius: 8px;
   justify-content: center;
   padding: 4px 8px;
+  margin-top: 16px;
 `
 
 const Title = styled.Text`

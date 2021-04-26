@@ -1,48 +1,64 @@
-import { Button, TextInput, Text, View } from 'react-native'
-import { NavigationContainer, DrawerActions, useTheme } from '@react-navigation/native'
-import { useSelector, useDispatch } from 'react-redux'
-import * as React from 'react'
+import { SafeAreaView, ScrollView, TextInput } from 'react-native'
+import { useTheme } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import React, { useCallback, useContext, useState } from 'react'
 
-// import CabalUI from '../components/Cabal'
-// import { RootState } from '../app/rootReducer'
-// import { useRenderIpc } from '../utils/cabal-render-ipc'
-import MenuButton from '../components/MenuButton'
+import { LocalizationContext } from '../utils/Translations'
+import { RootState } from '../app/rootReducer'
+import Button from '../components/Button'
+import Input from '../components/Input'
+import PanelHeader from '../components/PanelHeader'
+import PanelSection from '../components/PanelSection'
+import SectionHeaderText from '../components/SectionHeaderText'
 
 function AddCabalScreen({ navigation }) {
   const { colors } = useTheme()
+  const { t } = useContext(LocalizationContext)
 
-  // const { cabals, currentCabalKey } = useSelector((state: RootState) => state.cabals)
+  const { cabals } = useSelector((state: RootState) => state.cabals)
 
-  // useRenderIpc({ cabalKey: currentCabalKey, settings: {} })
-  // console.log('', { cabals, currentCabalKey })
+  const [newCabalKeyInput, setNewCabalKeyInput] = useState<string>()
+  const [newCabalUsernameInput, setNewCabalUsernameInput] = useState<string>()
 
-  // const currentCabal = cabals.find((cabal) => cabal.key === currentCabalKey)
+  const onPressClose = useCallback(() => {
+    navigation.navigate('ChannelScreen')
+  }, [])
 
-  // console.log('currentCabal', currentCabal)
+  const onPressCreate = useCallback(() => {}, [])
+
+  const onPressJoin = useCallback(() => {
+    console.log({ newCabalKeyInput, newCabalUsernameInput })
+  }, [newCabalKeyInput, newCabalUsernameInput])
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <View>
-        <MenuButton />
-      </View>
-      <Text style={{ color: colors.primary }}>Cabal</Text>
-      <Text style={{ color: colors.text }}>open source decentralized private chat</Text>
+    <SafeAreaView>
+      {!!cabals.length && (
+        <PanelHeader title={t('add_cabal_title')} onPressClose={onPressClose} />
+      )}
+      <ScrollView>
+        <PanelSection colors={colors}>
+          <SectionHeaderText colors={colors}>
+            {t('add_cabal_join_cabal_section_title')}
+          </SectionHeaderText>
+          <Input
+            placeholder={t('add_cabal_key_input_placeholder')}
+            onChangeText={setNewCabalKeyInput}
+          />
+          <Input
+            placeholder={t('add_cabal_name_input_placeholder')}
+            onChangeText={setNewCabalUsernameInput}
+          />
+          <Button title={t('add_cabal_join_button')} onPress={onPressJoin} />
+        </PanelSection>
 
-      <View style={{ backgroundColor: colors.card }}>
-        <TextInput style={{ borderColor: colors.border }} placeholder="cabal://" />
-        <TextInput style={{ borderColor: colors.border }} placeholder="Pick a nickname" />
-
-        <Button title="Join" onPress={() => {}} />
-      </View>
-
-      <Button title="Create A New Cabal" onPress={() => {}} />
-    </View>
+        <PanelSection colors={colors}>
+          <SectionHeaderText colors={colors}>
+            {t('add_cabal_new_cabal_section_title')}
+          </SectionHeaderText>
+          <Button title={t('add_cabal_new_cabal_button')} onPress={onPressCreate} />
+        </PanelSection>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
