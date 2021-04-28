@@ -27,6 +27,7 @@ export const CabalLightTheme: ExtendedTheme = {
     textHighlight: 'rgb(168, 153, 223)',
     textSofter: 'rgb(32, 32, 32)',
   },
+  name: 'Cabal Light',
 }
 
 export const CabalDarkTheme: ExtendedTheme = {
@@ -43,4 +44,5 @@ export const CabalDarkTheme: ExtendedTheme = {
     textHighlight: 'rgb(168, 153, 223)',
     textSofter: 'rgb(169, 169, 169)',
   },
+  name: 'Cabal Dark',
 }

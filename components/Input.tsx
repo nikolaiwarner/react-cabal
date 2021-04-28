@@ -22,8 +22,10 @@ const TextInput = styled.TextInput`
 
 interface InputProps {
   containerStyle?: ViewStyle
+  defaultValue?: string
   onChangeText?: (text: string) => any
   placeholder?: string
+  style?: ViewStyle
   value?: string
 }
 
@@ -34,8 +36,10 @@ export default function Input(props: InputProps) {
     <Container colors={colors} style={props.containerStyle}>
       <TextInput
         colors={colors}
+        defaultValue={props.defaultValue}
         onChangeText={props.onChangeText}
         placeholder={props.placeholder}
+        style={props.style}
         value={props.value}
       />
     </Container>

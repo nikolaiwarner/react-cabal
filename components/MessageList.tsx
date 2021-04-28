@@ -81,7 +81,8 @@ export default function MessageList() {
   }
 
   const keyExtractor = useCallback((item, index) => {
-    return item.key ?? index
+    // return item.key ?? index
+    return index
   }, [])
 
   const renderItem = useCallback(({ item }: { item: MessageProps }) => {

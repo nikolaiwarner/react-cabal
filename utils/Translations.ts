@@ -40,6 +40,7 @@ const Translations = {
     sidebarlist_channels: 'Channels',
     sidebarlist_favorites: 'Favorites',
     sidebarlist_peers: 'Peers',
+    theme_editor_screen_title: 'Theme Editor',
   },
   es: {
     add_cabal_join_button: 'Entrar',
@@ -77,6 +78,7 @@ const Translations = {
     sidebarlist_channels: 'Canales',
     sidebarlist_favorites: 'Favoritas',
     sidebarlist_peers: 'Compañeras',
+    theme_editor_screen_title: 'Theme Editor',
   },
 }
 

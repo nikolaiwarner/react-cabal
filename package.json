@@ -1,12 +1,14 @@
 {
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/picker": "^1.8.1",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
     "@reduxjs/toolkit": "^1.5.1",
     "expo": "~40.0.0",
     "expo-localization": "^10.1.0",
+    "hex-color-regex": "^1.1.0",
     "i18n-js": "^3.8.0",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",

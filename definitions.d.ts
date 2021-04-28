@@ -19,6 +19,7 @@ declare module '@react-navigation/native' {
       textHighlight: string
       textSofter: string
     }
+    name: string
   }
   export function useTheme(): ExtendedTheme
 }

@@ -23,6 +23,10 @@ function CabalSettingsScreen({ navigation }) {
 
   const onPressCopyCabalKey = useCallback(() => {}, [currentCabal.key])
 
+  const onPressEditTheme = useCallback(() => {
+    navigation.navigate('ThemeEditorScreen')
+  }, [])
+
   const onPressRemoveCabal = useCallback(() => {}, [])
 
   const shareableCabalKey = useCallback(() => {
@@ -43,8 +47,8 @@ function CabalSettingsScreen({ navigation }) {
           <HelpText colors={colors}>{t('cabal_settings_invite_body')}</HelpText>
           <TextInput value={shareableCabalKey()} />
           <Button
-            title={t('cabal_settings_copy_key_button')}
             onPress={onPressCopyCabalKey}
+            title={t('cabal_settings_copy_key_button')}
           />
         </PanelSection>
 
@@ -66,14 +70,24 @@ function CabalSettingsScreen({ navigation }) {
 
         <PanelSection colors={colors}>
           <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
+            {t('cabal_settings_edit_theme_header')}
+          </SectionHeaderText>
+          <Button
+            onPress={onPressEditTheme}
+            title={t('cabal_settings_edit_theme_button')}
+          ></Button>
+        </PanelSection>
+
+        <PanelSection colors={colors}>
+          <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
             {t('cabal_settings_remove_cabal_header')}
           </SectionHeaderText>
           <HelpText colors={colors}>{t('cabal_settings_remove_cabal_body')}</HelpText>
           <Button
+            onPress={onPressRemoveCabal}
             title={t('cabal_settings_remove_cabal_button', {
               key: currentCabal.key.substr(0, 8),
             })}
-            onPress={onPressRemoveCabal}
           ></Button>
         </PanelSection>
       </ScrollView>
