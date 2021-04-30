@@ -1,6 +1,7 @@
-import { TextInput, Text, View, SafeAreaView, ScrollView, Switch } from 'react-native'
 import { NavigationContainer, DrawerActions, useTheme } from '@react-navigation/native'
+import { TextInput, Text, View, SafeAreaView, ScrollView, Switch } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
+import QRCode from 'react-native-qrcode-svg'
 import React, { useCallback, useContext } from 'react'
 
 import { LocalizationContext } from '../utils/Translations'
@@ -10,6 +11,8 @@ import HelpText from '../components/HelpText'
 import PanelHeader from '../components/PanelHeader'
 import PanelSection from '../components/PanelSection'
 import SectionHeaderText from '../components/SectionHeaderText'
+
+const qrLogo = require('../assets/icon.png')
 
 function CabalSettingsScreen({ navigation }) {
   const { colors } = useTheme()
@@ -50,6 +53,7 @@ function CabalSettingsScreen({ navigation }) {
             onPress={onPressCopyCabalKey}
             title={t('cabal_settings_copy_key_button')}
           />
+          <QRCode value={shareableCabalKey()} logo={qrLogo} />
         </PanelSection>
 
         <PanelSection colors={colors}>

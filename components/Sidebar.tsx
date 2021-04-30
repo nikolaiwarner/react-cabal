@@ -120,6 +120,7 @@ export default function Sidebar(
                 <SidebarList
                   activeItem={currentCabal.currentChannel}
                   items={currentCabal.channelsFavorites}
+                  key={sidebarList.id}
                   renderItem={renderChannelListItem}
                   sidebarList={sidebarList}
                   title={t('sidebarlist_favorites')}
@@ -130,6 +131,7 @@ export default function Sidebar(
                 <SidebarList
                   activeItem={currentCabal.currentChannel}
                   items={currentCabal.channelsJoined}
+                  key={sidebarList.id}
                   renderHeaderActionButton={renderChannelListHeaderActionButton}
                   renderItem={renderChannelListItem}
                   sidebarList={sidebarList}
@@ -140,6 +142,7 @@ export default function Sidebar(
               return (
                 <SidebarList
                   items={currentCabal.users}
+                  key={sidebarList.id}
                   renderItem={renderPeerListItem}
                   sidebarList={sidebarList}
                   title={t('sidebarlist_peers')}
@@ -150,6 +153,7 @@ export default function Sidebar(
               // return (
               //   <SidebarList
               //     items={}
+              //     key={sidebarList.id}
               //     renderItem={}
               //     sidebarList={sidebarList}
               //     title={sidebarList.title}
