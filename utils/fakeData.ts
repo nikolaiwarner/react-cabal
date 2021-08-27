@@ -23,16 +23,18 @@ export const manyUsers: UserProps[] = [
 ]
 
 export const message: MessageProps = {
-  user: defaultUser,
   content: 'Hello friends!',
+  key: '1232',
   timestamp: new Date(2019, 8, 21, 12, 0).toISOString(),
+  user: defaultUser,
 }
 
 export const longMessage: MessageProps = {
-  user: defaultUser,
   content:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+  key: '1232',
   timestamp: new Date(2019, 8, 21, 12, 0).toISOString(),
+  user: defaultUser,
 }
 
 export const longMessageOtherUser: MessageProps = {
@@ -80,6 +82,7 @@ export const defaultChannel: ChannelProps = {
 }
 
 export const defaultChannels: ChannelProps[] = [
+  defaultChannel,
   { ...defaultChannel, name: 'arts' },
   { ...defaultChannel, name: 'crafts' },
   { ...defaultChannel, name: 'dance' },
@@ -102,6 +105,7 @@ export const defaultCabal: CabalProps = {
   channelsJoined: defaultChannels.slice(0, 3),
   channelsFavorites: [defaultChannels[1]],
   currentChannel: defaultChannels[0],
+  id: '0201400f1aa2e3076a3f17f4521b2cc41e258c446cdaa44742afe6e1b9fd5f82',
   key: '0201400f1aa2e3076a3f17f4521b2cc41e258c446cdaa44742afe6e1b9fd5f82',
   name: 'Cabal Club',
   username: 'nickwarner',
@@ -110,10 +114,14 @@ export const defaultCabal: CabalProps = {
 
 export const defaultCabals: CabalProps[] = [
   defaultCabal,
-  { ...defaultCabal, key: '7c6f63f92765e36102' },
-  { ...defaultCabal, key: '04b51eef9ad64e2841' },
-  { ...defaultCabal, key: 'f63f92765e36102046' },
-  { ...defaultCabal, key: '521b2cc41e258c446c' },
+  {
+    ...defaultCabal,
+    key: '1fdc83d08699781adfeacba9aa6bb880203d5e61357e5667ccbcc12e4a9065ad',
+  },
+  { ...defaultCabal, id: '7c6f63f92765e36102', key: '7c6f63f92765e36102' },
+  { ...defaultCabal, id: '04b51eef9ad64e2841', key: '04b51eef9ad64e2841' },
+  { ...defaultCabal, id: 'f63f92765e36102046', key: 'f63f92765e36102046' },
+  { ...defaultCabal, id: '521b2cc41e258c446c', key: '521b2cc41e258c446c' },
 ]
 
 export const manyCabals: CabalProps[] = [

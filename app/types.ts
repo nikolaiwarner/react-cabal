@@ -15,6 +15,7 @@ export interface CabalProps {
   channelsJoined: ChannelProps[]
   channelsFavorites: ChannelProps[]
   currentChannel: ChannelProps
+  id: string
   key: string
   name?: string
   username: string

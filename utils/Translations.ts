@@ -20,6 +20,8 @@ const Translations = {
     cabal_settings_cabal_name_body:
       'Set a local name for this cabal. Only you can see this.',
     cabal_settings_cabal_name_header: 'Cabal Name',
+    cabal_settings_edit_theme_button: 'Theme Editor',
+    cabal_settings_edit_theme_header: 'Theme',
     cabal_settings_notifications_body:
       'Display a notification for new messages for this cabal when a channel is in the background.',
     cabal_settings_notifications_header: 'Notifications',
@@ -55,6 +57,8 @@ const Translations = {
     cabal_settings_cabal_name_body:
       'Establezca un nombre local para esto. Solo tú puedes ver esto.',
     cabal_settings_copy_key_button: 'Copiar clave',
+    cabal_settings_edit_theme_button: 'Theme Editor',
+    cabal_settings_edit_theme_header: 'Theme',
     cabal_settings_invite_body:
       'Comparta esta clave con otras personas para que puedan unirse.',
     cabal_settings_invite_header: 'Invitar a la gente',

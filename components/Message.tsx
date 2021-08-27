@@ -98,14 +98,14 @@ export default function Message(props: MessageComponentProps) {
     <MessageContainer>
       <AvatarContainer onPress={onPressUser}>
         {props.repeatedName ? null : (
-          <Avatar name={props.message.user.name || 'conspirator'} />
+          <Avatar name={props.message?.user?.name || 'conspirator'} />
         )}
       </AvatarContainer>
       <Content>
         {props.repeatedName ? null : (
           <TouchableOpacity onPress={onPressUser}>
             <Name colors={colors}>
-              {props.message.user.name || 'conspirator'} {renderDate()}
+              {props.message?.user?.name || 'conspirator'} {renderDate()}
             </Name>
           </TouchableOpacity>
         )}
