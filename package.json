@@ -1,43 +1,44 @@
 {
   "dependencies": {
-    "@react-native-community/masked-view": "0.1.10",
+    "@react-native-community/masked-view": "0.1.11",
     "@react-native-community/picker": "^1.8.1",
-    "@react-navigation/drawer": "^5.12.5",
-    "@react-navigation/native": "^5.9.4",
-    "@react-navigation/stack": "^5.14.4",
-    "@reduxjs/toolkit": "^1.5.1",
-    "expo": "~40.0.0",
-    "expo-localization": "^10.1.0",
+    "@react-navigation/drawer": "^6.1.4",
+    "@react-navigation/native": "^6.0.2",
+    "@react-navigation/stack": "^6.0.7",
+    "@reduxjs/toolkit": "^1.6.1",
+    "expo": "^43.0.0",
+    "expo-localization": "~11.0.0",
     "hex-color-regex": "^1.1.0",
     "i18n-js": "^3.8.0",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
-    "react": "16.13.1",
+    "react": "17.0.2",
     "react-blockies": "^1.4.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
-    "react-native-gesture-handler": "~1.8.0",
+    "react-dom": "17.0.2",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-43.tar.gz",
+    "react-native-gesture-handler": "~1.10.2",
     "react-native-qrcode-svg": "^6.1.1",
-    "react-native-reanimated": "~1.13.0",
-    "react-native-safe-area-context": "3.1.9",
-    "react-native-screens": "~2.15.2",
-    "react-native-svg": "^12.1.1",
-    "react-native-web": "~0.13.12",
-    "react-redux": "^7.2.3",
-    "styled-components": "^5.2.3"
+    "react-native-reanimated": "~2.2.0",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.8.0",
+    "react-native-svg": "12.1.1",
+    "react-native-web": "0.17.5",
+    "react-redux": "^7.2.5",
+    "styled-components": "^5.3.1"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0",
-    "@types/react": "~16.9.35",
-    "@types/react-native": "~0.63.2",
-    "typescript": "~4.0.0"
+    "@babel/core": "^7.12.9",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "~0.64.12",
+    "typescript": "~4.3.5"
   },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "deploy-web": "expo build:web && vercel web-build"
   },
   "private": true
 }

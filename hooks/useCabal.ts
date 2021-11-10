@@ -13,6 +13,8 @@ export default function useCabal(props?: UseCabalProps) {
   const dispatch = useDispatch()
 
   const initializeCabal = ({ key, nickname }: { key: string; nickname?: string }) => {
+    nickname = nickname ?? generateUniqueName()
+
     if (!cabalClient) {
       console.error('cabal client is not available')
       return
@@ -50,13 +52,20 @@ export default function useCabal(props?: UseCabalProps) {
 
       cabalDetails.on('peer-added', (k) => {
         console.log('new peer', k)
-      })
-
-      cabalDetails.publishNick(nickname ?? generateUniqueName(), () => {
         cabalDetails.publishMessage({
           type: 'chat/text',
           content: {
-            text: 'Hey there!',
+            text: 'peer-added: ' + k.key,
+            channel: 'default',
+          },
+        })
+      })
+
+      cabalDetails.publishNick(nickname, () => {
+        cabalDetails.publishMessage({
+          type: 'chat/text',
+          content: {
+            text: 'Hey there! Im ' + nickname,
             channel: 'default',
           },
         })
