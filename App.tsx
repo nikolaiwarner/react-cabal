@@ -8,6 +8,7 @@ import * as Localization from 'expo-localization'
 import i18n from 'i18n-js'
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 
+import { CabalProvider } from './lib'
 import { LocalizationContext } from './utils/Translations'
 import { RootState } from './app/rootReducer'
 import { setColorMode } from './features/themes/themesSlice'
@@ -21,7 +22,6 @@ import store from './app/store'
 import ThemeEditorScreen from './screens/ThemeEditorScreen'
 import useIsMobile from './hooks/useIsMobile'
 import UserProfileScreen from './screens/UserProfileScreen'
-import useCabal from './hooks/useCabal'
 
 const Stack = createStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -31,18 +31,11 @@ function ScreensContainer() {
   const dispatch = useDispatch()
   const isMobile = useIsMobile()
 
-  const { cabalClient, initializeCabal } = useCabal()
-
   const { currentTheme } = useSelector((state: RootState) => state.themes)
 
   useEffect(() => {
     dispatch(setColorMode(colorMode))
   }, [colorMode])
-
-  useEffect(() => {
-    const key = '1fdc83d08699781adfeacba9aa6bb880203d5e61357e5667ccbcc12e4a9065ad'
-    initializeCabal({ key })
-  }, [])
 
   return (
     <NavigationContainer theme={currentTheme}>
@@ -77,9 +70,13 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <LocalizationContext.Provider value={localizationContext}>
-        <ScreensContainer />
-      </LocalizationContext.Provider>
+      <CabalProvider
+        initCabal={'a69fe8ad12f1177080cc926e2b552b336cfd26060d07e1221f8c4e6626c89dc4'}
+      >
+        <LocalizationContext.Provider value={localizationContext}>
+          <ScreensContainer />
+        </LocalizationContext.Provider>
+      </CabalProvider>
     </Provider>
   )
 }
