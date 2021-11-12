@@ -22,6 +22,7 @@ import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
 import { current } from 'immer'
 import { useChannel } from '../lib'
+import { useUsers } from '../lib/hooks/useUsers'
 
 const SidebarContainer = styled.SafeAreaView`
   display: flex;
@@ -53,6 +54,10 @@ export default function Sidebar(
   const { currentCabal, sidebarLists } = useSelector((state: RootState) => state.cabals)
 
   const { joinedChannels, currentChannel, members } = useChannel()
+  const { users = [] } = useUsers()
+
+  const userList = Object.values(users)
+
   const onPressOpenChannelBrowser = useCallback(() => {
     props.navigation.dispatch(DrawerActions.toggleDrawer())
     props.navigation.navigate('ChannelBrowserScreen')
@@ -90,28 +95,27 @@ export default function Sidebar(
     [],
   )
 
-  const renderPeerListItem = useCallback((user: UserProps, isActive?: boolean) => {
+  const renderPeerListItem = useCallback((user: UserProps) => {
     const onPressRow = () => {
       dispatch(setSelectedUser(user))
       props.navigation.dispatch(DrawerActions.toggleDrawer())
       props.navigation.navigate('UserProfileScreen')
     }
+
     return (
       <Row key={user.key} onPress={onPressRow}>
-        <RowText style={{ color: isActive ? colors.text : colors.textSofter }}>
+        <RowText style={{ color: user.online ? colors.text : colors.textSofter }}>
           <FontAwesome
             color={user.online ? colors.primary : colors.textSofter}
             name="circle-o"
             size={12}
           />
           {'  '}
-          {user.name ?? user.key}
+          {user.name || user.key.slice(0, 5)}
         </RowText>
       </Row>
     )
   }, [])
-
-  console.log('current cabal is', currentCabal)
 
   return (
     <SidebarContainer style={{ backgroundColor: colors.background }}>
@@ -146,7 +150,7 @@ export default function Sidebar(
             } else if (sidebarList.id === 'peers') {
               return (
                 <SidebarList
-                  items={currentCabal.users}
+                  items={userList}
                   key={sidebarList.id}
                   renderItem={renderPeerListItem}
                   sidebarList={sidebarList}

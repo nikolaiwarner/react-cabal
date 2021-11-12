@@ -12,6 +12,7 @@ export function useMessage(channel) {
   const { users } = useUsers()
 
   const messageHandler = (msg: any) => {
+    console.log('new message is', msg)
     const { message, channel: messageChannel } = msg
 
     if (messageChannel === channel) {
