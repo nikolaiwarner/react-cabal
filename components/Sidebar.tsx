@@ -20,6 +20,8 @@ import { RootState } from '../app/rootReducer'
 import CabalList from './CabalList'
 import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
+import { current } from 'immer'
+import { useChannel } from '../lib'
 
 const SidebarContainer = styled.SafeAreaView`
   display: flex;
@@ -50,6 +52,7 @@ export default function Sidebar(
 
   const { currentCabal, sidebarLists } = useSelector((state: RootState) => state.cabals)
 
+  const { joinedChannels, currentChannel, members } = useChannel()
   const onPressOpenChannelBrowser = useCallback(() => {
     props.navigation.dispatch(DrawerActions.toggleDrawer())
     props.navigation.navigate('ChannelBrowserScreen')
@@ -108,6 +111,8 @@ export default function Sidebar(
     )
   }, [])
 
+  console.log('current cabal is', currentCabal)
+
   return (
     <SidebarContainer style={{ backgroundColor: colors.background }}>
       <CabalList navigation={props.navigation} />
@@ -129,8 +134,8 @@ export default function Sidebar(
             } else if (sidebarList.id === 'channels_joined') {
               return (
                 <SidebarList
-                  activeItem={currentCabal.currentChannel}
-                  items={currentCabal.channelsJoined}
+                  activeItem={currentChannel}
+                  items={joinedChannels.map((item) => ({ name: item }))} // TODO: fix this
                   key={sidebarList.id}
                   renderHeaderActionButton={renderChannelListHeaderActionButton}
                   renderItem={renderChannelListItem}

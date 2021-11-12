@@ -71,7 +71,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <CabalProvider
-        initCabal={'a69fe8ad12f1177080cc926e2b552b336cfd26060d07e1221f8c4e6626c89dc4'}
+        initCabal={'2940a78b2c4094906749e75643042bb15c19098bb866bf2882712e3a2639704b'}
       >
         <LocalizationContext.Provider value={localizationContext}>
           <ScreensContainer />

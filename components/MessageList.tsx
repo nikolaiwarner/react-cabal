@@ -8,6 +8,7 @@ import styled from 'styled-components/native'
 import { MessageProps } from '../app/types'
 import { RootState } from '../app/rootReducer'
 import Message from './Message'
+import { useMessage } from '../lib'
 
 const MessageSectionList = styled.SectionList`
   overflow: scroll;
@@ -59,24 +60,39 @@ export default function MessageList() {
 
   const [sectionData, setSectionData] = useState([])
 
+  const { messages: messageList } = useMessage('default')
+
   useEffect(() => {
     buildSectionData()
-  }, [messages])
+  }, [messageList])
 
+  // TODO: optimize this :(
   const buildSectionData = () => {
     const dataByDate = {}
-    messages.forEach((message) => {
-      const date = moment(message.timestamp).format('YYYY-MM-DD')
+    messageList.forEach(({ value, sender }) => {
+      const date = moment(value.timestamp).format('YYYY-MM-DD')
       if (dataByDate[date]) {
-        dataByDate[date].push(message)
+        dataByDate[date].push({
+          content: value?.content?.text,
+          key: sender,
+          timestamp: value?.timestamp,
+          user: { name: sender, key: sender, online: true },
+        })
       } else {
-        dataByDate[date] = [message]
+        dataByDate[date] = [
+          {
+            content: value?.content?.text,
+            key: sender,
+            user: { name: sender, key: sender, online: true },
+          },
+        ]
       }
     })
     const data = Object.entries(dataByDate).map(([title, data]) => ({
       title,
-      data,
+      data: data?.reverse(),
     }))
+
     setSectionData(data)
   }
 
