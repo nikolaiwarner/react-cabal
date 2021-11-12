@@ -4,18 +4,19 @@ import { useCabal } from './useCabal'
 import { useChannel } from './useChannel'
 import { useUsers } from './useUsers'
 
-export function useMessage(channel) {
+export function useMessage() {
   const [messages, setMessages] = useState<Array<any>>([])
   const client = useContext(CabalContext)
+  const { currentChannel } = useChannel()
   const { currentCabal } = useCabal()
 
   const { users } = useUsers()
 
   const messageHandler = (msg: any) => {
-    console.log('new message is', msg)
+    console.log('new mssage heheh', msg)
     const { message, channel: messageChannel } = msg
 
-    if (messageChannel === channel) {
+    if (messageChannel === currentChannel) {
       const currentMessage = {
         ...msg.message,
         sender: users?.[message.key]?.name || message?.key?.slice(0, 5),
@@ -28,7 +29,7 @@ export function useMessage(channel) {
     if (!client) return
     client.getMessages(
       {
-        channel,
+        currentChannel,
       },
       (allMessages: Array<any>) => {
         const messageList = allMessages.map((msg: any) => {
@@ -45,9 +46,20 @@ export function useMessage(channel) {
     cabal.on('new-message', messageHandler)
 
     return () => cabal.removeListener('new-message', messageHandler)
-  }, [channel, currentCabal, client, users])
+  }, [currentChannel, currentCabal, client, users])
+
+  function sendMessage(message) {
+    currentCabal.publishMessage({
+      type: 'chat/text',
+      content: {
+        text: message,
+        channel: currentChannel,
+      },
+    })
+  }
 
   return {
     messages,
+    sendMessage,
   }
 }

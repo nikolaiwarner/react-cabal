@@ -20,6 +20,7 @@ import { publishMessage } from '../features/cabals/messagesSlice'
 import { RootState } from '../app/rootReducer'
 import { setEmojiPickerModalVisible } from '../features/cabals/cabalsSlice'
 import { ChannelProps } from '../app/types'
+import { useMessage } from '../lib'
 
 const MessageComposerContainer = styled.View`
   border-top-color: ${(props) => props.colors.border};
@@ -75,7 +76,7 @@ export default function MessageComposer() {
   const dispatch = useDispatch()
 
   const { cabals, currentCabal } = useSelector((state: RootState) => state.cabals)
-
+  const { sendMessage } = useMessage()
   const formFieldRef = useRef(null)
   const textInputRef = useRef(null)
 
@@ -92,13 +93,8 @@ export default function MessageComposer() {
   }
 
   const onSubmit = (_event?) => {
-    dispatch(
-      publishMessage({
-        cabalKey: currentCabal.key,
-        channel: currentCabal.currentChannel.name,
-        message: textInputRef.current.value,
-      }),
-    )
+    sendMessage(textInputRef.current.value)
+    textInputRef.current.value = ''
   }
 
   const addEmoji = () => {}
