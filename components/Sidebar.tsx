@@ -53,7 +53,7 @@ export default function Sidebar(
 
   const { currentCabal, sidebarLists } = useSelector((state: RootState) => state.cabals)
 
-  const { joinedChannels, currentChannel, members } = useChannel()
+  const { joinedChannels, currentChannel, members, focusChannel } = useChannel()
   const { users = [] } = useUsers()
 
   const userList = Object.values(users)
@@ -73,15 +73,15 @@ export default function Sidebar(
       </TouchableOpacity>
     )
   }, [])
+  console.log('current channel', currentChannel)
 
   const renderChannelListItem = useCallback(
     (channel: ChannelProps, isActive?: boolean) => {
       const onPressRow = () => {
-        dispatch(focusChannel({ cabalKey: currentCabal.key, channel }))
-        props.navigation.dispatch(DrawerActions.toggleDrawer())
-        props.navigation.navigate('ChannelScreen')
+        console.log('changing channel', channel)
+        focusChannel(channel.name)
       }
-      const color = isActive ? colors.text : colors.textSofter
+      const color = currentChannel === channel.name ? colors.text : colors.textSofter
       return (
         <Row key={channel.name} onPress={onPressRow}>
           <RowText style={{ color }}>

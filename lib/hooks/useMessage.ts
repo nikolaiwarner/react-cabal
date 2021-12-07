@@ -13,7 +13,6 @@ export function useMessage() {
   const { users } = useUsers()
 
   const messageHandler = (msg: any) => {
-    console.log('new mssage heheh', msg)
     const { message, channel: messageChannel } = msg
 
     if (messageChannel === currentChannel) {
@@ -44,7 +43,9 @@ export function useMessage() {
     const cabal = client.getCurrentCabal()
 
     cabal.on('new-message', messageHandler)
-
+    cabal.on('channel-focus', (channel) => {
+      console.log('changingingg channeele', channel)
+    })
     return () => cabal.removeListener('new-message', messageHandler)
   }, [currentChannel, currentCabal, client, users])
 
