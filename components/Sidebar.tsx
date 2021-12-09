@@ -9,18 +9,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
-import { CabalProps, ChannelProps, UserProps } from '../app/types'
-import {
-  focusChannel,
-  setSelectedUser,
-  updateSidebarList,
-} from '../features/cabals/cabalsSlice'
+import { ChannelProps, UserProps } from '../app/types'
+import { setSelectedUser } from '../features/cabals/cabalsSlice'
 import { LocalizationContext } from '../utils/Translations'
 import { RootState } from '../app/rootReducer'
 import CabalList from './CabalList'
 import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
-import { current } from 'immer'
 import { useChannel } from '../lib'
 import { useUsers } from '../lib/hooks/useUsers'
 
@@ -53,7 +48,8 @@ export default function Sidebar(
 
   const { currentCabal, sidebarLists } = useSelector((state: RootState) => state.cabals)
 
-  const { joinedChannels, currentChannel, members, focusChannel } = useChannel()
+  const { joinedChannels, currentChannel, focusChannel } = useChannel()
+
   const { users = [] } = useUsers()
 
   const userList = Object.values(users)
@@ -73,27 +69,19 @@ export default function Sidebar(
       </TouchableOpacity>
     )
   }, [])
-  console.log('current channel', currentChannel)
 
-  const renderChannelListItem = useCallback(
-    (channel: ChannelProps, isActive?: boolean) => {
-      const onPressRow = () => {
-        console.log('changing channel', channel)
-        focusChannel(channel.name)
-      }
-      const color = currentChannel === channel.name ? colors.text : colors.textSofter
-      return (
-        <Row key={channel.name} onPress={onPressRow}>
-          <RowText style={{ color }}>
-            <Feather name="hash" size={12} color={color} />
-            {'  '}
-            {channel.name}
-          </RowText>
-        </Row>
-      )
-    },
-    [],
-  )
+  const renderChannelListItem = (channel: ChannelProps, isActive?: boolean) => {
+    const color = currentChannel === channel.name ? colors.text : colors.textSofter
+    return (
+      <Row key={channel.name} onPress={() => focusChannel(channel.name)}>
+        <RowText style={{ color }}>
+          <Feather name="hash" size={12} color={color} />
+
+          {channel.name}
+        </RowText>
+      </Row>
+    )
+  }
 
   const renderPeerListItem = useCallback((user: UserProps) => {
     const onPressRow = () => {
@@ -127,8 +115,8 @@ export default function Sidebar(
             if (sidebarList.id === 'favorites') {
               return (
                 <SidebarList
-                  activeItem={currentCabal.currentChannel}
-                  items={currentCabal.channelsFavorites}
+                  activeItem={currentChannel}
+                  items={[]} //pass channel favourites currentCabal.channelsFavorites}
                   key={sidebarList.id}
                   renderItem={renderChannelListItem}
                   sidebarList={sidebarList}
@@ -159,15 +147,6 @@ export default function Sidebar(
               )
             } else {
               // TODO: Custom lists
-              // return (
-              //   <SidebarList
-              //     items={}
-              //     key={sidebarList.id}
-              //     renderItem={}
-              //     sidebarList={sidebarList}
-              //     title={sidebarList.title}
-              //   />
-              // )
             }
           })}
         </ScrollView>

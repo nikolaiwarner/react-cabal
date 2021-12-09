@@ -1,33 +1,24 @@
-import { useContext, useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useCabal } from './useCabal'
-import { CabalContext } from '../CabalProvider'
-
-let cli
 
 export function useChannel() {
-  const client = useContext(CabalContext)
-  cli = useContext(CabalContext)
   const [channels, setChannels] = useState([]) // all channels
   const [joinedChannels, setJoinedChannels] = useState([]) // all channels joined by the user
   const [currentChannel, setCurrentChannel] = useState('default') // current selected channel
-  const [members, setMembers] = useState([]) // members of channel
 
   const { currentCabal } = useCabal()
 
-  function focusChannel(channel: string) {
-    window.client = client
-    if (client?.getJoinedChannels()?.includes(channel) && channel !== currentChannel) {
-      console.log('and this is calleddddd to chnage channelasdf')
-      client.focusChannel(channel)
-      setCurrentChannel(channel)
+  const focusChannel = (channel: string) => {
+    if (joinedChannels?.includes(channel) && channel !== currentChannel) {
+      currentCabal.focusChannel(channel)
     }
   }
 
   useEffect(() => {
-    if (!client) return
-    const channelsList = client.getChannels()
-    const joinedChannelsList = client.getJoinedChannels()
-    const channel = client.getCurrentChannel()
+    if (!currentCabal) return
+    const channelsList = currentCabal.getChannels()
+    const joinedChannelsList = currentCabal.getJoinedChannels()
+    const channel = currentCabal.getCurrentChannel()
     // const channelMembers = client.getChannelMembers(channel);
 
     // TODO: any way to batch irrespective of the renderer?
@@ -37,36 +28,21 @@ export function useChannel() {
     // setMembers(channelMembers);
 
     if (channel === '!status') {
-      client.focusChannel('default')
+      currentCabal.focusChannel('default')
       setCurrentChannel('default')
     }
-  }, [currentCabal, client])
 
-  function switchChannel(channel) {
-    console.log('channel is changed to', channel)
-  }
-
-  useEffect(() => {
-    if (!client) return
-    const cabal = client?.getCurrentCabal()
-    cabal.on('channel-focus', switchChannel)
-
-    return
-  }, [currentCabal, client])
-
-  useEffect(() => {
-    if (currentCabal)
-      currentCabal.on('channel-focus', (event: any) => {
-        setCurrentChannel(event.channel)
+    if (currentCabal) {
+      currentCabal.on('channel-focus', ({ channel }: { channel: string }) => {
+        setCurrentChannel(channel)
       })
-  }, [client, currentCabal])
+    }
+  }, [currentCabal])
 
-  console.log('client value is', client)
   return {
     channels,
     joinedChannels,
     currentChannel,
-    focusChannel, // change the current channel
-    members,
+    focusChannel,
   }
 }
