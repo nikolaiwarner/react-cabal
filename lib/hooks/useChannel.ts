@@ -14,17 +14,21 @@ export function useChannel() {
     }
   }
 
+  const joinChannel = (channel: string) => {
+    if (!joinedChannels?.includes(channel)) {
+      currentCabal.joinChannel(channel)
+    }
+    currentCabal.focusChannel(channel)
+  }
+
   useEffect(() => {
     if (!currentCabal) return
-    const channelsList = currentCabal.getChannels()
-    const joinedChannelsList = currentCabal.getJoinedChannels()
-    const channel = currentCabal.getCurrentChannel()
-    // const channelMembers = client.getChannelMembers(channel);
 
-    // TODO: any way to batch irrespective of the renderer?
-    setChannels(channelsList)
+    const channel = currentCabal.getCurrentChannel()
+
+    setChannels(currentCabal.channels)
     setCurrentChannel(channel)
-    setJoinedChannels(joinedChannelsList)
+    setJoinedChannels(currentCabal.getJoinedChannels())
     // setMembers(channelMembers);
 
     if (channel === '!status') {
@@ -36,6 +40,10 @@ export function useChannel() {
       currentCabal.on('channel-focus', ({ channel }: { channel: string }) => {
         setCurrentChannel(channel)
       })
+
+      currentCabal.on('channel-join', (channel) => {
+        console.log('channel joined is', channel)
+      })
     }
   }, [currentCabal])
 
@@ -44,5 +52,6 @@ export function useChannel() {
     joinedChannels,
     currentChannel,
     focusChannel,
+    joinChannel,
   }
 }

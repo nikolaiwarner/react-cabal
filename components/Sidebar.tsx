@@ -48,8 +48,9 @@ export default function Sidebar(
 
   const { currentCabal, sidebarLists } = useSelector((state: RootState) => state.cabals)
 
-  const { joinedChannels, currentChannel, focusChannel } = useChannel()
+  const { joinedChannels, currentChannel, focusChannel, channels } = useChannel()
 
+  console.log('joinedChannels', joinedChannels, channels)
   const { users = [] } = useUsers()
 
   const userList = Object.values(users)
