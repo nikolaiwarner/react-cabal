@@ -18,7 +18,6 @@ export function useChannel() {
     if (!joinedChannels?.includes(channel)) {
       currentCabal.joinChannel(channel)
     }
-    currentCabal.focusChannel(channel)
   }
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export function useChannel() {
       })
 
       currentCabal.on('channel-join', (channel) => {
-        console.log('channel joined is', channel)
+        // TODO: actions any if on joining channels
       })
     }
   }, [currentCabal])

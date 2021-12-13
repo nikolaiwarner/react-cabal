@@ -45,7 +45,7 @@ function ChannelBrowserScreen({ navigation }) {
 
   const renderChannelRow = (channel: ChannelProps) => {
     return (
-      <Row key={channel} onPress={() => onPressJoinChannel(channel)}>
+      <Row key={channel} onPress={() => onPressJoinChannel(channel?.name)}>
         <Name colors={colors}>{channel.name}</Name>
         <MemberCount colors={colors}>
           {channel?.members?.size}{' '}
