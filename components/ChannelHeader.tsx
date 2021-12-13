@@ -1,15 +1,68 @@
 import { AntDesign, Feather } from '@expo/vector-icons'
 import { Text, TouchableOpacity } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
-import { ChannelProps } from '../app/types'
 import { LocalizationContext } from '../utils/Translations'
-import { RootState } from '../app/rootReducer'
 import MenuButton from '../components/MenuButton'
 import useIsMobile from '../hooks/useIsMobile'
+import { useChannel } from '../lib'
+
+export default function ChannelHeader() {
+  const { colors } = useTheme()
+  const { t } = useContext(LocalizationContext)
+
+  const isMobile = useIsMobile()
+  const navigation = useNavigation()
+
+  const { currentChannel: currentChannelName, channels } = useChannel()
+
+  const currentChannel = channels?.[currentChannelName] || {}
+
+  window.currentChannel = currentChannel
+  const onPressFavorite = () => {}
+
+  const onPressChannelDetails = useCallback(() => {
+    navigation.navigate('ChannelDetailScreen')
+  }, [])
+
+  const onPressTopic = () => {}
+
+  return (
+    <ChannelHeaderContainer style={{ borderBottomColor: colors.border }}>
+      <MenuTitleContainer>
+        {isMobile && <MenuButton />}
+        <Title>
+          <ChannelName colors={colors}>
+            {currentChannel?.name}{' '}
+            <TouchableOpacity onPress={onPressFavorite}>
+              <AntDesign name="staro" size={18} color={colors.textSofter} />
+            </TouchableOpacity>
+          </ChannelName>
+          <ChannelInfo>
+            <Text style={{ color: colors.textHighlight }}>
+              {currentChannel?.members?.size}{' '}
+              <Feather name="users" size={12} color={colors.textHighlight} /> ⋅{' '}
+            </Text>
+            <Topic
+              colors={colors}
+              onPress={onPressTopic}
+              title={t('channel_topic_placeholder')}
+            >
+              {currentChannel.topic ?? t('channel_topic_placeholder')}
+            </Topic>
+          </ChannelInfo>
+        </Title>
+      </MenuTitleContainer>
+      <Actions>
+        <TouchableOpacity onPress={onPressChannelDetails}>
+          <Feather name="more-vertical" size={18} color={colors.textSofter} />
+        </TouchableOpacity>
+      </Actions>
+    </ChannelHeaderContainer>
+  )
+}
 
 const ChannelHeaderContainer = styled.View`
   align-items: center;
@@ -52,55 +105,3 @@ const Topic = styled.Text`
 `
 
 const Actions = styled.View``
-
-export default function ChannelHeader() {
-  const { colors } = useTheme()
-  const { t } = useContext(LocalizationContext)
-  const dispatch = useDispatch()
-  const isMobile = useIsMobile()
-  const navigation = useNavigation()
-
-  const { currentCabal } = useSelector((state: RootState) => state.cabals)
-
-  const onPressFavorite = () => {}
-
-  const onPressChannelDetails = useCallback(() => {
-    navigation.navigate('ChannelDetailScreen')
-  }, [])
-
-  const onPressTopic = () => {}
-
-  return (
-    <ChannelHeaderContainer style={{ borderBottomColor: colors.border }}>
-      <MenuTitleContainer>
-        {isMobile && <MenuButton />}
-        <Title>
-          <ChannelName colors={colors}>
-            {currentCabal.currentChannel.name}{' '}
-            <TouchableOpacity onPress={onPressFavorite}>
-              <AntDesign name="staro" size={18} color={colors.textSofter} />
-            </TouchableOpacity>
-          </ChannelName>
-          <ChannelInfo>
-            <Text style={{ color: colors.textHighlight }}>
-              {currentCabal.currentChannel.members.length}{' '}
-              <Feather name="users" size={12} color={colors.textHighlight} /> ⋅{' '}
-            </Text>
-            <Topic
-              colors={colors}
-              onPress={onPressTopic}
-              title={t('channel_topic_placeholder')}
-            >
-              {currentCabal.currentChannel.topic ?? t('channel_topic_placeholder')}
-            </Topic>
-          </ChannelInfo>
-        </Title>
-      </MenuTitleContainer>
-      <Actions>
-        <TouchableOpacity onPress={onPressChannelDetails}>
-          <Feather name="more-vertical" size={18} color={colors.textSofter} />
-        </TouchableOpacity>
-      </Actions>
-    </ChannelHeaderContainer>
-  )
-}

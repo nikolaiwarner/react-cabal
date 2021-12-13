@@ -30,11 +30,6 @@ export function useChannel() {
     setJoinedChannels(currentCabal.getJoinedChannels())
     // setMembers(channelMembers);
 
-    if (channel === '!status') {
-      currentCabal.focusChannel('default')
-      setCurrentChannel('default')
-    }
-
     if (currentCabal) {
       currentCabal.on('channel-focus', ({ channel }: { channel: string }) => {
         setCurrentChannel(channel)
@@ -43,6 +38,10 @@ export function useChannel() {
       currentCabal.on('channel-join', (channel) => {
         // TODO: actions any if on joining channels
       })
+
+      if (channel === '!status') {
+        focusChannel('default')
+      }
     }
   }, [currentCabal])
 
