@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { useCabal } from './useCabal'
+import { useUsers } from './useUsers'
 
 export function useChannel() {
   const [channels, setChannels] = useState([]) // all channels
   const [joinedChannels, setJoinedChannels] = useState([]) // all channels joined by the user
   const [currentChannel, setCurrentChannel] = useState('default') // current selected channel
+  const [currentChannelMembers, setCurrentChannelMembers] = useState([]) // members of the current channel
+  const { users } = useUsers()
 
   const { currentCabal } = useCabal()
 
@@ -19,6 +22,17 @@ export function useChannel() {
       currentCabal.joinChannel(channel)
     }
   }
+
+  useEffect(() => {
+    // update member list!
+    const memberSet = channels?.[currentChannel]?.members?.values()
+    if (memberSet) {
+      const memberList = Array.from(memberSet)
+        .map((member) => users?.[member])
+        .filter((i) => !!i)
+      setCurrentChannelMembers(memberList)
+    }
+  }, [users, currentChannel])
 
   useEffect(() => {
     if (!currentCabal) return
@@ -51,5 +65,6 @@ export function useChannel() {
     currentChannel,
     focusChannel,
     joinChannel,
+    currentChannelMembers,
   }
 }

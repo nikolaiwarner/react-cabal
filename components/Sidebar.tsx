@@ -50,7 +50,6 @@ export default function Sidebar(
 
   const { joinedChannels, currentChannel, focusChannel, channels } = useChannel()
 
-  console.log('joinedChannels', joinedChannels, channels)
   const { users = [] } = useUsers()
 
   const userList = Object.values(users)
