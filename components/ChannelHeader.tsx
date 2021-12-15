@@ -20,7 +20,6 @@ export default function ChannelHeader() {
 
   const currentChannel = channels?.[currentChannelName] || {}
 
-  window.currentChannel = currentChannel
   const onPressFavorite = () => {}
 
   const onPressChannelDetails = useCallback(() => {
@@ -50,7 +49,7 @@ export default function ChannelHeader() {
               onPress={onPressTopic}
               title={t('channel_topic_placeholder')}
             >
-              {currentChannel.topic ?? t('channel_topic_placeholder')}
+              {currentChannel.topic || t('channel_topic_placeholder')}
             </Topic>
           </ChannelInfo>
         </Title>

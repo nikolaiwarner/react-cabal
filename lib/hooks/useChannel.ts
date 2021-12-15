@@ -23,6 +23,11 @@ export function useChannel() {
     }
   }
 
+  // set topic for current channel
+  const setCurrentChannelTopic = (topic: string) => {
+    currentCabal.setChannelTopic(currentChannel, topic)
+  }
+
   useEffect(() => {
     // update member list!
     const memberSet = channels?.[currentChannel]?.members?.values()
@@ -66,5 +71,6 @@ export function useChannel() {
     focusChannel,
     joinChannel,
     currentChannelMembers,
+    setCurrentChannelTopic,
   }
 }
