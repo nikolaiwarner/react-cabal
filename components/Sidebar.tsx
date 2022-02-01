@@ -9,17 +9,15 @@ import { useSelector, useDispatch } from 'react-redux'
 import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
-import { CabalProps, ChannelProps, UserProps } from '../app/types'
-import {
-  focusChannel,
-  setSelectedUser,
-  updateSidebarList,
-} from '../features/cabals/cabalsSlice'
+import { ChannelProps, UserProps } from '../app/types'
+import { setSelectedUser } from '../features/cabals/cabalsSlice'
 import { LocalizationContext } from '../utils/Translations'
 import { RootState } from '../app/rootReducer'
 import CabalList from './CabalList'
 import SidebarHeader from './SidebarHeader'
 import SidebarList from './SidebarList'
+import { useChannel } from '../lib'
+import { useUsers } from '../lib/hooks/useUsers'
 
 const SidebarContainer = styled.SafeAreaView`
   display: flex;
@@ -50,6 +48,12 @@ export default function Sidebar(
 
   const { currentCabal, sidebarLists } = useSelector((state: RootState) => state.cabals)
 
+  const { joinedChannels, currentChannel, focusChannel, channels } = useChannel()
+
+  const { users = [] } = useUsers()
+
+  const userList = Object.values(users)
+
   const onPressOpenChannelBrowser = useCallback(() => {
     props.navigation.dispatch(DrawerActions.toggleDrawer())
     props.navigation.navigate('ChannelBrowserScreen')
@@ -66,43 +70,36 @@ export default function Sidebar(
     )
   }, [])
 
-  const renderChannelListItem = useCallback(
-    (channel: ChannelProps, isActive?: boolean) => {
-      const onPressRow = () => {
-        dispatch(focusChannel({ cabalKey: currentCabal.key, channel }))
-        props.navigation.dispatch(DrawerActions.toggleDrawer())
-        props.navigation.navigate('ChannelScreen')
-      }
-      const color = isActive ? colors.text : colors.textSofter
-      return (
-        <Row key={channel.name} onPress={onPressRow}>
-          <RowText style={{ color }}>
-            <Feather name="hash" size={12} color={color} />
-            {'  '}
-            {channel.name}
-          </RowText>
-        </Row>
-      )
-    },
-    [],
-  )
+  const renderChannelListItem = (channel: ChannelProps, isActive?: boolean) => {
+    const color = currentChannel === channel.name ? colors.text : colors.textSofter
+    return (
+      <Row key={channel.name} onPress={() => focusChannel(channel.name)}>
+        <RowText style={{ color }}>
+          <Feather name="hash" size={12} color={color} />
 
-  const renderPeerListItem = useCallback((user: UserProps, isActive?: boolean) => {
+          {channel.name}
+        </RowText>
+      </Row>
+    )
+  }
+
+  const renderPeerListItem = useCallback((user: UserProps) => {
     const onPressRow = () => {
       dispatch(setSelectedUser(user))
       props.navigation.dispatch(DrawerActions.toggleDrawer())
       props.navigation.navigate('UserProfileScreen')
     }
+
     return (
       <Row key={user.key} onPress={onPressRow}>
-        <RowText style={{ color: isActive ? colors.text : colors.textSofter }}>
+        <RowText style={{ color: user.online ? colors.text : colors.textSofter }}>
           <FontAwesome
             color={user.online ? colors.primary : colors.textSofter}
             name="circle-o"
             size={12}
           />
           {'  '}
-          {user.name ?? user.key}
+          {user.name || user.key.slice(0, 5)}
         </RowText>
       </Row>
     )
@@ -118,8 +115,8 @@ export default function Sidebar(
             if (sidebarList.id === 'favorites') {
               return (
                 <SidebarList
-                  activeItem={currentCabal.currentChannel}
-                  items={currentCabal.channelsFavorites}
+                  activeItem={currentChannel}
+                  items={[]} //pass channel favourites currentCabal.channelsFavorites}
                   key={sidebarList.id}
                   renderItem={renderChannelListItem}
                   sidebarList={sidebarList}
@@ -129,8 +126,8 @@ export default function Sidebar(
             } else if (sidebarList.id === 'channels_joined') {
               return (
                 <SidebarList
-                  activeItem={currentCabal.currentChannel}
-                  items={currentCabal.channelsJoined}
+                  activeItem={currentChannel}
+                  items={joinedChannels.map((item) => ({ name: item }))} // TODO: fix this
                   key={sidebarList.id}
                   renderHeaderActionButton={renderChannelListHeaderActionButton}
                   renderItem={renderChannelListItem}
@@ -141,7 +138,7 @@ export default function Sidebar(
             } else if (sidebarList.id === 'peers') {
               return (
                 <SidebarList
-                  items={currentCabal.users}
+                  items={userList}
                   key={sidebarList.id}
                   renderItem={renderPeerListItem}
                   sidebarList={sidebarList}
@@ -150,15 +147,6 @@ export default function Sidebar(
               )
             } else {
               // TODO: Custom lists
-              // return (
-              //   <SidebarList
-              //     items={}
-              //     key={sidebarList.id}
-              //     renderItem={}
-              //     sidebarList={sidebarList}
-              //     title={sidebarList.title}
-              //   />
-              // )
             }
           })}
         </ScrollView>

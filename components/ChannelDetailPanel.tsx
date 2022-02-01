@@ -1,49 +1,31 @@
-import { DrawerActions, useNavigation, useTheme } from '@react-navigation/native'
-import { Feather, FontAwesome } from '@expo/vector-icons'
-import { ScrollView, Text, View } from 'react-native'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import { FontAwesome } from '@expo/vector-icons'
+import { ScrollView } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import React, { useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 
-import { CabalProps, ChannelProps, UserProps } from '../app/types'
-import { color } from 'react-native-reanimated'
-import { focusChannel, setSelectedUser } from '../features/cabals/cabalsSlice'
+import { UserProps } from '../app/types'
 import { LocalizationContext } from '../utils/Translations'
-import { RootState } from '../app/rootReducer'
 import Button from './Button'
-import CabalList from './CabalList'
+
 import PanelHeader from './PanelHeader'
 import PanelSection from './PanelSection'
 import SectionHeaderText from './SectionHeaderText'
-import useIsMobile from '../hooks/useIsMobile'
-
-const Container = styled.SafeAreaView``
-
-const Row = styled.TouchableOpacity`
-  /* cursor: pointer; */
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-right: 16px;
-`
-
-const RowText = styled.Text`
-  /* cursor: pointer; */
-  font-size: 16px;
-`
+import { useChannel } from '../lib'
 
 export default function ChannelDetailPanel() {
   const { colors } = useTheme()
   const { t } = useContext(LocalizationContext)
-  const dispatch = useDispatch()
-  const isMobile = useIsMobile()
-  const navigation = useNavigation()
+  const { currentChannelMembers } = useChannel()
 
-  const { currentCabal } = useSelector((state: RootState) => state.cabals)
+  const navigation = useNavigation()
 
   const renderPeerListItem = useCallback((user: UserProps) => {
     const onPressRow = () => {
-      dispatch(setSelectedUser(user))
-      navigation.navigate('UserProfileScreen')
+      // TODO: remove redux dependency
+      // dispatch(setSelectedUser(user))
+      // navigation.navigate('UserProfileScreen')
     }
 
     return (
@@ -52,18 +34,17 @@ export default function ChannelDetailPanel() {
           <FontAwesome
             name="circle-o"
             size={12}
-            color={user.online ? colors.primary : colors.textSofter}
-          />
-          {'  '}
-          {user.name ?? user.key}
+            color={user.online ? colors.textHighlight : colors.textSofter}
+          />{' '}
+          {user.name || user.key.slice(0, 5)}
         </RowText>
       </Row>
     )
   }, [])
 
-  const onPressClose = useCallback(() => {
+  const onPressClose = () => {
     navigation.navigate('ChannelScreen')
-  }, [])
+  }
 
   const onPressLeaveChannel = useCallback(() => {}, [])
 
@@ -89,9 +70,23 @@ export default function ChannelDetailPanel() {
           <SectionHeaderText colors={colors} style={{ paddingBottom: 16 }}>
             {t('channel_members_list_header')}
           </SectionHeaderText>
-          {currentCabal.currentChannel.members.map(renderPeerListItem)}
+          {currentChannelMembers.map(renderPeerListItem)}
         </PanelSection>
       </ScrollView>
     </Container>
   )
 }
+
+const Container = styled.SafeAreaView``
+
+const Row = styled.TouchableOpacity`
+  /* cursor: pointer; */
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 16px;
+`
+
+const RowText = styled.Text`
+  /* cursor: pointer; */
+  font-size: 16px;
+`
